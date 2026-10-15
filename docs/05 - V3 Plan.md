@@ -18,7 +18,7 @@ Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes 
 - **Next session (2026-10-16):** build the sweep tool (`tools/sweep.py`), benchmark parallel jobs, do the 20-run rehearsal, then **launch the ~10 h overnight sweep**.
 - The sweep saves each run's **starting parameters + full down-sampled history** (all `HISTORY_KEYS`, including the new per-n mode amplitudes), so Phase 1 (rules, features) and Phase 3 (models) can be built *after* the night, on the saved data, without re-running anything.
 - **Before launching:** laptop plugged in, sleep/suspend disabled, GUI closed, nothing heavy running.
-- **Open offers:** a quiz after each phase; you writing some of the Phase 1 outcome rules yourself, with Claude reviewing.
+- **Who builds what:** Claude writes all the code (agentically engineered). Every threshold is commented with its reason, each phase gets a plain-language summary, and note 06 is written for someone starting from zero.
 
 ## 0. Decisions already made
 
