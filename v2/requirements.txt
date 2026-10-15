@@ -1,0 +1,7 @@
+matplotlib==3.10.9
+numba==0.68.0
+numpy==2.2.6
+PyOpenGL==3.1.10
+PyQt5==5.15.11
+pytest==9.1.1
+vispy==0.17.0

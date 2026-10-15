@@ -1,0 +1,12 @@
+# environments and caches (incl. numba's compiled-kernel cache in __pycache__)
+.venv/
+__pycache__/
+.pytest_cache/
+# editor / Obsidian workspace state
+.vscode/
+.obsidian/
+# run outputs (exports, sweep datasets) - regenerate with the tools
+*.zip
+*.npz
+# unrelated old project kept locally
+old FREE1105 IGNORE/
