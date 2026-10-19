@@ -10,3 +10,6 @@ __pycache__/
 *.npz
 # unrelated old project kept locally
 old FREE1105 IGNORE/
+
+# sweep datasets (tools/sweep.py)
+dataset/
