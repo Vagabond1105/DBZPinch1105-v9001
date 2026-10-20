@@ -408,6 +408,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # random numbers (pinch.py _init_tracers), so the physics is unchanged
         self.setup.n_tracers = n_tracers
         self.cb_textbook.setCurrentIndex(max(0, self.cb_textbook.findData(eid)))
+        self.cb_preset.setCurrentIndex(-1)      # blank: no preset is in use, don't show one
         self.chk_stop.setChecked(True)
         self.sp_stop.setValue(round(ex["t_end"], 2))
         self._sync_controls()
