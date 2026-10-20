@@ -22,7 +22,13 @@ Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes 
 - **Phase 1 done (2026-10-20):** `v2/zpinch/analysis/` (features, rules, explain), `tools/analyse.py`, `--analyse`, *Finish & analyse* button, analysis in exports; 55/55 tests. Labels: disruption 435, saturated kink 259, gravity sag 198, quiescent 89, resistive 47, radiative collapse 30, sausage 0. The labels reproduce Kruskal–Shafranov ($nq$ of the seeded helix) cleanly; 50/51 twins keep their label at 48³. **Full write-up: [[05.1 - V3 Phase 1 Results]].** The class list in §3 below was revised against the data (sausage never dominates; compression is a phase, not a class).
 - **Sweep resumed 2026-10-20 08:16** (same command, deadline 18:16), to fill the thin classes (radiative collapse, resistive).
 - **Phase 3 first version done (2026-10-20):** `zpinch/analysis/model.py`, `tools/train.py`, models in `v2/models/` (with `MODEL_CARD.md`). On 216 locked-away test runs: (a) run classifier 98.6 %, (b) outcome predictor **88.0 %** vs 68.1 % for the n q rule alone. The GUI shows a live "Predicted outcome" under the Run buttons. **Write-up from zero: [[05.2 - V3 Phase 3 Machine Learning]].**
-- **Next:** when the sweep finishes, re-run `tools/train.py` on all runs and update 05.2's numbers; then Phase 4 (library).
+- **Paused 2026-10-20 ~10:00** (to continue later). Sweep at 1391 runs and still running until 18:16, or until the laptop sleeps. Resume it with the same `run` command; check it with `tools/sweep.py status dataset/sweep-2026-10-19`. 35/35 analysis + ML tests pass.
+- **Next, in order:**
+  1. **Retrain:** once the sweep has stopped, run `tools/analyse.py` and then `tools/train.py` on the whole dataset; update the numbers in 05.2 and here; run the full test suite.
+  2. **Phase 4:** the curated library, about a dozen textbook runs with write-ups. It doesn't need the finished sweep.
+  3. **Phase 5:** the GUI report panel.
+  4. **Phase 6:** `06 - V3 Technical Overview` plus the demo.
+  - **User to do:** click *Finish & analyse* once in the GUI and check the "Predicted outcome" line. Before pushing, scrub the old co-author trailers from `a85229e`, `f1a2a06` and `db0399f`.
 - **Who builds what:** Claude writes all the code (agentically engineered). Every threshold is commented with its reason, each phase gets a plain-language summary, and note 06 is written for someone starting from zero.
 
 ## 0. Decisions already made
