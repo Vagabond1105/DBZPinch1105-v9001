@@ -2,12 +2,30 @@
 
 Interactive 3D resistive-MHD simulation of a Z-pinch plasma column: a Bennett
 equilibrium driven by an external circuit, with live controls, GPU volume
-rendering, tracer particles and exact energy bookkeeping.
+rendering, tracer particles and exact energy bookkeeping. v3 (same folder)
+labels, explains and forecasts each run.
 
 Full documentation (Obsidian notes) lives in `../docs/`:
 `01 - Vision`, `02 - V1 and Why It Failed`, `03 - V2 Changes and Fixes`, `04 - V2 Complete Guide`,
 `05 - V3 Plan`, `05.1 - V3 Phase 1 Results` (run labelling and explanations),
-`05.2 - V3 Phase 3 Machine Learning` (run classifier + outcome predictor, from zero).
+`05.2 - V3 Phase 3 Machine Learning` (run classifier + outcome predictor, from zero),
+`05.3 - V3 Phase 4 Write-up Library`, `05.4 - V3 Phase 5 Report Panel`,
+`06 - V3 Technical Overview` (all of v3, from zero; start here).
+
+## Results (v3)
+
+Trained and tested on one overnight sweep of 2902 simulations (562 runs locked away for testing):
+
+| | accuracy | balanced accuracy |
+|---|---|---|
+| Run classifier: what happened, from the finished run | 99.3 % | 98.8 % |
+| **Outcome predictor: what will happen, from the settings alone** | **94.3 %** | 93.3 % |
+| Baseline: the Kruskal-Shafranov number n q alone | 67.6 % | 44.6 % |
+
+The sweep reproduces the Kruskal-Shafranov criterion with no physics put in by hand: 108 of 108 runs with
+0.5 <= n q < 1 saturate as a bent helix, and none of the 110 runs with n q >= 1.5 grows a kink. Every run
+gets a plain-language report (what happened, why, what to try next) from a curated, data-checked library.
+How it all works, from zero: `docs/06 - V3 Technical Overview.md`. Demo gallery: `tools/demo.py`.
 
 ## Run
 
@@ -19,6 +37,7 @@ Full documentation (Obsidian notes) lives in `../docs/`:
 ./test.sh                   # physics, analysis, library and report tests
 .venv/bin/python tools/analyse.py dataset/sweep-2026-10-19        # label a whole sweep
 .venv/bin/python tools/train.py dataset/sweep-2026-10-19          # train + evaluate the models
+.venv/bin/python tools/demo.py dataset/sweep-2026-10-19 demo/     # browsable gallery of textbook runs
 ```
 
 First launch compiles the numba kernels (~20-40 s, cached afterwards).
@@ -48,6 +67,7 @@ tools/sweep.py          v3: overnight parameter sweep -> dataset/ (resumable)
 tools/analyse.py        v3: label/explain one saved run or a whole sweep
 tools/train.py          v3: train/evaluate run classifier (a) and outcome predictor (b)
 tools/library.py        v3: write-up library upkeep (stats, check, show, replay the textbook runs)
+tools/demo.py           v3: demo gallery (headline scores + every textbook run's HTML report)
 tests/                  Sod, Alfven wave, diffusion, energy budget, equilibrium, kink growth; run analysis
 examples/               toy_advection.py, toy_muscl.py - tiny NumPy demos used in the docs
 ```

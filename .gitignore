@@ -13,3 +13,6 @@ old FREE1105 IGNORE/
 
 # sweep datasets (tools/sweep.py)
 dataset/
+
+# demo gallery (tools/demo.py; regenerate in seconds)
+v2/demo/
