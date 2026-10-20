@@ -1,0 +1,314 @@
+{
+ "gravity-sag-general": {
+  "label": "gravity_sag",
+  "live": {
+   "cooling": 0.01956,
+   "current": 0.828,
+   "gravity": 1.433,
+   "resistivity": 0.002122,
+   "rise_time": 0.2114,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.002038
+  },
+  "run": "r00141",
+  "setup": {
+   "axial_field": 1.293,
+   "background_density": 0.05,
+   "length": 1.225,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 7849
+  },
+  "t_end": 3.000820457051956
+ },
+ "gravity-sag-with-kink": {
+  "label": "gravity_sag",
+  "live": {
+   "cooling": 0.02937,
+   "current": 1.056,
+   "gravity": 1.402,
+   "resistivity": 0.00103,
+   "rise_time": 0.6659,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.0006791
+  },
+  "run": "r00982",
+  "setup": {
+   "axial_field": 1.112,
+   "background_density": 0.05,
+   "length": 1.229,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 4043
+  },
+  "t_end": 3.0003664607204223
+ },
+ "kink-disruption-driven": {
+  "label": "kink_disruption",
+  "live": {
+   "cooling": 0.0,
+   "current": 2.157,
+   "gravity": 0.0,
+   "resistivity": 0.0001395,
+   "rise_time": 0.1167,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.003684
+  },
+  "run": "r00302",
+  "setup": {
+   "axial_field": 0.09875,
+   "background_density": 0.05,
+   "length": 1.13,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 8075
+  },
+  "t_end": 3.0008383135746497
+ },
+ "kink-disruption-pure-zpinch": {
+  "label": "kink_disruption",
+  "live": {
+   "cooling": 0.0,
+   "current": 1.0,
+   "gravity": 0.0,
+   "resistivity": 0.001211,
+   "rise_time": 0.6248,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.00107
+  },
+  "run": "r00706",
+  "setup": {
+   "axial_field": 0.0,
+   "background_density": 0.05,
+   "length": 2.649,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 5158
+  },
+  "t_end": 3.0005267646013207
+ },
+ "kink-disruption-weak-bz": {
+  "label": "kink_disruption",
+  "live": {
+   "cooling": 0.0,
+   "current": 0.9944,
+   "gravity": 0.0,
+   "resistivity": 0.001598,
+   "rise_time": 0.1188,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.003109
+  },
+  "run": "r00192",
+  "setup": {
+   "axial_field": 0.1844,
+   "background_density": 0.05,
+   "length": 2.443,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 3266
+  },
+  "t_end": 3.0020490257570858
+ },
+ "quiescent-marginal": {
+  "label": "quiescent",
+  "live": {
+   "cooling": 0.0,
+   "current": 2.213,
+   "gravity": 0.0,
+   "resistivity": 0.001283,
+   "rise_time": 0.1521,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.007042
+  },
+  "run": "r00396",
+  "setup": {
+   "axial_field": 0.9263,
+   "background_density": 0.05,
+   "length": 2.096,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 961
+  },
+  "t_end": 3.000479815689356
+ },
+ "quiescent-stable": {
+  "label": "quiescent",
+  "live": {
+   "cooling": 0.0115,
+   "current": 1.0,
+   "gravity": 0.0,
+   "resistivity": 0.0005875,
+   "rise_time": 0.09518,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.006957
+  },
+  "run": "r00533",
+  "setup": {
+   "axial_field": 1.439,
+   "background_density": 0.05,
+   "length": 1.277,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 327
+  },
+  "t_end": 3.0005485990673395
+ },
+ "radiative-collapse-general": {
+  "label": "radiative_collapse",
+  "live": {
+   "cooling": 1.717,
+   "current": 1.539,
+   "gravity": 0.0,
+   "resistivity": 0.001409,
+   "rise_time": 0.1388,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.008846
+  },
+  "run": "r00235",
+  "setup": {
+   "axial_field": 1.22,
+   "background_density": 0.05,
+   "length": 2.14,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 8508
+  },
+  "t_end": 3.000613102662702
+ },
+ "resistive-diffusion-general": {
+  "label": "resistive_diffusion",
+  "live": {
+   "cooling": 0.0,
+   "current": 0.9997,
+   "gravity": 0.0,
+   "resistivity": 0.008041,
+   "rise_time": 0.4887,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.0003053
+  },
+  "run": "r00591",
+  "setup": {
+   "axial_field": 1.219,
+   "background_density": 0.05,
+   "length": 1.284,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 3816
+  },
+  "t_end": 3.000901505823159
+ },
+ "saturated-kink-above-limit": {
+  "label": "saturated_kink",
+  "live": {
+   "cooling": 0.0,
+   "current": 1.0,
+   "gravity": 0.0,
+   "resistivity": 0.0009337,
+   "rise_time": 0.7112,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.0003362
+  },
+  "run": "r00868",
+  "setup": {
+   "axial_field": 1.117,
+   "background_density": 0.05,
+   "length": 1.404,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 4461
+  },
+  "t_end": 3.001426562331854
+ },
+ "saturated-kink-marginal": {
+  "label": "saturated_kink",
+  "live": {
+   "cooling": 0.0,
+   "current": 0.9706,
+   "gravity": 0.0,
+   "resistivity": 0.0009704,
+   "rise_time": 0.1882,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.001103
+  },
+  "run": "r00273",
+  "setup": {
+   "axial_field": 0.6174,
+   "background_density": 0.05,
+   "length": 2.147,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 8098
+  },
+  "t_end": 3.0013544035805895
+ },
+ "saturated-kink-near-disruption": {
+  "label": "saturated_kink",
+  "live": {
+   "cooling": 0.0,
+   "current": 1.948,
+   "gravity": 0.0,
+   "resistivity": 0.0003072,
+   "rise_time": 0.0662,
+   "solver": "HLLD",
+   "spitzer": false,
+   "viscosity": 0.000563
+  },
+  "run": "r00835",
+  "setup": {
+   "axial_field": 0.3104,
+   "background_density": 0.05,
+   "length": 1.285,
+   "n_tracers": 0,
+   "perturbation": "Random + m=0 + m=1",
+   "perturbation_amp": 0.02,
+   "pinch_radius": 0.12,
+   "resolution": "Very fast (32 x 32 x 48)",
+   "seed": 1646
+  },
+  "t_end": 3.0002875497996584
+ }
+}

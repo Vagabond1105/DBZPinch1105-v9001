@@ -8,7 +8,7 @@ aliases: [V3 Plan, Run Analysis Plan]
 > [!abstract] One-sentence version
 > When you finish a simulation, v3 tells you **what kind of evolution you just watched**, for example "saturated helical kink", "kink → disruption" or "radiative collapse". It also tells you **why it happened**, using the run's own physics bookkeeping, and gives you a **curated write-up** that links your starting parameters to the outcome. The prose is readable by a student; every number a researcher would need sits underneath it.
 
-Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes and Fixes]] → [[04 - V2 Complete Guide]] → **05 V3 Plan**
+Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes and Fixes]] → [[04 - V2 Complete Guide]] → **05 V3 Plan** → [[05.1 - V3 Phase 1 Results]] → [[05.2 - V3 Phase 3 Machine Learning]] → [[05.3 - V3 Phase 4 Write-up Library]]
 
 ---
 
@@ -22,13 +22,12 @@ Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes 
 - **Phase 1 done (2026-10-20):** `v2/zpinch/analysis/` (features, rules, explain), `tools/analyse.py`, `--analyse`, *Finish & analyse* button, analysis in exports; 55/55 tests. Labels: disruption 435, saturated kink 259, gravity sag 198, quiescent 89, resistive 47, radiative collapse 30, sausage 0. The labels reproduce Kruskal–Shafranov ($nq$ of the seeded helix) cleanly; 50/51 twins keep their label at 48³. **Full write-up: [[05.1 - V3 Phase 1 Results]].** The class list in §3 below was revised against the data (sausage never dominates; compression is a phase, not a class).
 - **Sweep resumed 2026-10-20 08:16** (same command, deadline 18:16), to fill the thin classes (radiative collapse, resistive).
 - **Phase 3 first version done (2026-10-20):** `zpinch/analysis/model.py`, `tools/train.py`, models in `v2/models/` (with `MODEL_CARD.md`). On 216 locked-away test runs: (a) run classifier 98.6 %, (b) outcome predictor **88.0 %** vs 68.1 % for the n q rule alone. The GUI shows a live "Predicted outcome" under the Run buttons. **Write-up from zero: [[05.2 - V3 Phase 3 Machine Learning]].**
-- **Paused 2026-10-20 ~10:00** (to continue later). Sweep at 1391 runs and still running until 18:16, or until the laptop sleeps. Resume it with the same `run` command; check it with `tools/sweep.py status dataset/sweep-2026-10-19`. 35/35 analysis + ML tests pass.
+- **Phase 4 done (2026-10-20):** the curated write-up library: 20 entries in `v2/zpinch/analysis/library/` (a general entry per class plus regime entries cut along the sweep's n q boundaries), `zpinch/analysis/writeup.py` (picks the most specific entry whose box contains the run, fills in its numbers), `tools/library.py` (stats, suggest, check, show). Sweep counts in the text are filled from a generated `stats.json`, so they update with the data. Every report (`--analyse`, *Finish & analyse*, export zips) now opens with *What happened*, *Why* and *Try next*, with the Phase 1 output underneath as the data appendix. All entries are `data-checked`; none is physicist-reviewed yet. Writing them found a **Phase 1 bug**: the kink diagnostic sees only n = 1–3, so columns seeded with n ≥ 4 were reported as "n = 1" (fixed; 05.1 corrected). **Write-up: [[05.3 - V3 Phase 4 Write-up Library]].**
 - **Next, in order:**
-  1. **Retrain:** once the sweep has stopped, run `tools/analyse.py` and then `tools/train.py` on the whole dataset; update the numbers in 05.2 and here; run the full test suite.
-  2. **Phase 4:** the curated library, about a dozen textbook runs with write-ups. It doesn't need the finished sweep.
-  3. **Phase 5:** the GUI report panel.
-  4. **Phase 6:** `06 - V3 Technical Overview` plus the demo.
-  - **User to do:** click *Finish & analyse* once in the GUI and check the "Predicted outcome" line. Before pushing, scrub the old co-author trailers from `a85229e`, `f1a2a06` and `db0399f`.
+  1. **Retrain:** once the sweep has stopped (deadline 18:16), run `tools/analyse.py` (the labels table gains `m1_resolved_frac`), `tools/train.py`, `tools/library.py stats` and `tools/library.py check` on the whole dataset; update the numbers in 05.2, 05.3 and here; run the full test suite.
+  2. **Phase 5:** the GUI report panel (with "load this textbook run" from `library/examples.json`).
+  3. **Phase 6:** `06 - V3 Technical Overview` plus the demo.
+  - **User to do:** click *Finish & analyse* once in the GUI and check the "Predicted outcome" line. Optionally review library entries (`library/README.md`). Before pushing, scrub the old co-author trailers from `a85229e`, `f1a2a06` and `db0399f`.
 - **Who builds what:** Claude writes all the code (agentically engineered). Every threshold is commented with its reason, each phase gets a plain-language summary, and note 06 is written for someone starting from zero.
 
 ## 0. Decisions already made

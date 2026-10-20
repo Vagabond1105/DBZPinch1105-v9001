@@ -56,7 +56,9 @@ FEATURES = [
     ("m1_gamma_tA", "-", "kink growth rate in units of 1 / t_alfven"),
     ("m1_t_onset", "t0", "start of the exponential growth window"),
     ("m1_dominant_n", "-", "axial wavenumber (wavelengths along L_z) carrying most of the kink at its peak"),
-    ("m1_high_n_frac", "-", "fraction of kink power in n = 2, 3 at the peak (spectrum spread)"),
+    ("m1_high_n_frac", "-", "fraction of kink power in n = 2, 3 at the peak (spectrum spread; nan if unresolved)"),
+    ("m1_resolved_frac", "-", "share of the kink amplitude carried by n = 1..3 at the peak (the saved diagnostic "
+                              "resolves only these; ~0 for columns seeded with n >= 4)"),
     ("seed_n", "-", "axial wavenumber of the seeded m = 0 / m = 1 perturbation (pinch.py: k a ~ 1.2)"),
     ("nq_seed", "-", "seed_n * q_a: Kruskal-Shafranov number of the seeded helix (< 1: unstable)"),
     # ---- sausage (m = 0) ----
@@ -277,9 +279,17 @@ def compute(h, meta):
     f["m1_gamma_r2"] = fit["r2"] if fit else float("nan")
     f["m1_gamma_tA"] = f["m1_gamma"] * f["t_alfven"]
     f["m1_t_onset"] = fit["t_start"] if fit else float("nan")
+    # The history resolves the kink into n = 1, 2, 3 only. A column seeded
+    # with n >= 4 (L_z > ~2.1 at a = 0.12) keeps its kink in the seeded helix
+    # and its harmonics, and n = 1..3 stay at zero: in the sweep the share of
+    # the m1 amplitude in n = 1..3 at the peak has median 1.00 for seed n = 2
+    # and 3, and 0.00 for seed n = 4 and 5. Below half, the dominant n is
+    # unknown (nan), not the argmax of zeros.
     pw = np.array([h[f"m1_n{n}"][ipk] ** 2 for n in (1, 2, 3)])
-    f["m1_dominant_n"] = float(np.argmax(pw) + 1)
-    f["m1_high_n_frac"] = float(pw[1:].sum() / pw.sum()) if pw.sum() > 0 else 0.0
+    f["m1_resolved_frac"] = float(math.sqrt(pw.sum()) / m1[ipk]) if m1[ipk] > 0 else 0.0
+    resolved = f["m1_resolved_frac"] >= 0.5
+    f["m1_dominant_n"] = float(np.argmax(pw) + 1) if resolved else float("nan")
+    f["m1_high_n_frac"] = float(pw[1:].sum() / pw.sum()) if resolved else float("nan")
 
     m0 = h["m0"]
     jpk = int(np.argmax(m0))

@@ -10,18 +10,20 @@ Causes come from physics bookkeeping, never from a model:
     where it happened.
 
 The output is a plain dict (JSON-safe) plus format_report() for a text
-version. Phase 4 adds curated write-ups on top; the numbers here are what
-those write-ups get filled with.
+version. The student-facing prose on top is a curated write-up from
+writeup.py (Phase 4), filled with the numbers computed here; the causes and
+criteria below it are the data appendix.
 """
 
 import math
+import textwrap
 
 import numpy as np
 
 from . import features as FE
 from . import rules as RU
 
-ANALYSIS_VERSION = "1.0 (phase 1, rules only)"
+ANALYSIS_VERSION = "1.1 (phase 4, rules + curated write-ups)"
 
 NAMES = {
     "quiescent": "Quiescent column",
@@ -205,6 +207,22 @@ def _phase(cls, name):
     return None
 
 
+def helix_sentence(f):
+    """Which helix carried the kink, as far as the n = 1..3 diagnostic can tell."""
+    seed = int(f["seed_n"])
+    if not math.isfinite(f["m1_dominant_n"]):
+        lam = f["length"] / seed
+        return (f"The saved mode diagnostic resolves n = 1 to 3 only, and they carry "
+                f"{100 * f['m1_resolved_frac']:.0f} % of this kink, so it sits in the seeded n = {seed} helix "
+                f"(wavelength {lam:.2f}, {lam / f['pinch_radius']:.1f} radii) or its harmonics.")
+    n = int(f["m1_dominant_n"])
+    lam = f["length"] / n
+    s = f"Most of the kink sits in the n = {n} helix (wavelength {lam:.2f}, {lam / f['pinch_radius']:.1f} radii)"
+    if n == seed:
+        return s + ", the helix the starting perturbation seeded."
+    return s + (f", not the seeded n = {seed}: a {'longer' if n < seed else 'shorter'} helix outgrew it.")
+
+
 def causes(h, f, cls):
     """Ordered list of {topic, text, energy?} explaining the timeline."""
     out = []
@@ -221,8 +239,6 @@ def causes(h, f, cls):
 
     p = _phase(cls, "kink_growth")
     if p:
-        n = int(f["m1_dominant_n"])
-        lam = f["length"] / n
         rate = (f"at rate {f['m1_gamma']:.2f} +- {f['m1_gamma_err']:.2f} per time unit "
                 f"({f['m1_gamma_tA']:.2f} per Alfven time; fit R^2 = {f['m1_gamma_r2']:.2f})")
         if f["axial_field"] == 0:
@@ -231,13 +247,11 @@ def causes(h, f, cls):
             why = (f"With q = {f['q_a']:.2g} the seeded n = {int(f['seed_n'])} helix has n q = {f['nq_seed']:.2g} < 1, "
                    f"so it is kink-unstable (Kruskal-Shafranov).")
         else:
-            why = (f"A kink grew although the seeded helix has n q = {f['nq_seed']:.2g} >= 1: a longer helix "
-                   f"(smaller n q) took over.")
+            why = (f"A kink grew although the seeded helix has n q = {f['nq_seed']:.2g} >= 1: q is lower inside "
+                   f"the column (on the axis, half its edge value for the Bennett profile), so the inner column "
+                   f"can still kink.")
         out.append({"topic": "kink_growth", "text": (
-            f"{why} A helical kink grew from t = {p['t_start']:.2f} {rate}. Most of it sits in the "
-            f"n = {n} helix (wavelength {lam:.2f}, i.e. {lam / f['pinch_radius']:.1f} radii)"
-            + (", the wavelength the starting perturbation seeded." if n == int(f["seed_n"]) else
-               f", not the n = {int(f['seed_n'])} that was seeded: this helix outgrew it.") )})
+            f"{why} A helical kink grew from t = {p['t_start']:.2f} {rate}. " + helix_sentence(f))})
 
     if "kink_disruption" in found:
         e = found["kink_disruption"]
@@ -368,7 +382,7 @@ def analyse(h, meta, with_ml=True):
     """
     f = FE.compute(h, meta)
     cls = RU.classify(h, f, meta)
-    return {
+    r = {
         "id": meta.get("id"),
         "version": ANALYSIS_VERSION,
         "label": cls["label"],
@@ -387,6 +401,13 @@ def analyse(h, meta, with_ml=True):
         "evidence": cls["evidence"],
         "ml": ml_view(f, cls, meta) if with_ml else None,
     }
+    from . import writeup as WU
+    try:
+        r["writeup"] = WU.writeup(r, meta)
+    except (OSError, KeyError, ValueError) as err:   # a broken library file must not break the analysis
+        r["writeup"] = None
+        r["notes"].append(f"no curated write-up: the library could not be read ({err!r})")
+    return r
 
 
 def analyse_sim(sim):
@@ -420,10 +441,20 @@ def format_report(r):
         L.append(f"! {note}")
     if r["notes"] or r["health"]:
         L.append("")
+    w = r.get("writeup")
+    if w:
+        from .writeup import match_text
+        L.append(w["title"])
+        for head, text in w["sections"].items():
+            L.append(head)
+            L += textwrap.wrap(text, 100, initial_indent="  ", subsequent_indent="  ")
+        if w["note"]:
+            L.append(f"! {w['note']}")
+        L += ["", "-" * 100, "Data appendix", ""]
     L.append("Timeline")
     for p in r["phases"]:
         L.append(f"  t = {p['t_start']:5.2f} - {p['t_end']:5.2f}  {NAMES.get(p['name'], p['name']):<24s} {p['text']}")
-    L += ["", "What happened and why"]
+    L += ["", "Causes in detail (energy bookkeeping, phase by phase)"]
     for c in r["causes"]:
         L.append(f"  * {c['text']}")
     L += ["", "Stability criteria (theory vs this run)"]
@@ -448,5 +479,8 @@ def format_report(r):
     L += ["", "Energy budget, whole run (fractions of the starting energy E0)",
           "  " + "  ".join(f"{k} {e[k]:+.3f}" for k in STORES) +
           f"  | circuit in {e['injected']:+.3f}  radiated {e['radiated']:.3f}  floors {e['floor']:.3f}",
-          "", f"Analysis {r['version']}; {len(f)} features in r['features']."]
+          ""]
+    if w:
+        L.append("Write-up: " + match_text(w))
+    L.append(f"Analysis {r['version']}; {len(f)} features in r['features'].")
     return "\n".join(L)

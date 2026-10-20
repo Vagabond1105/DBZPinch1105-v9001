@@ -161,7 +161,7 @@ def test_borderline_is_low_confidence():
 def test_report_is_complete_and_json_safe():
     r = analyse(*make_run(m1=grow(4.0, 0.4)))
     text = format_report(r)
-    for part in ("Outcome: Saturated helical kink", "Timeline", "What happened and why",
+    for part in ("Outcome: Saturated helical kink", "Timeline", "Causes in detail",
                  "Stability criteria", "Energy budget"):
         assert part in text
     json.dumps(r)
