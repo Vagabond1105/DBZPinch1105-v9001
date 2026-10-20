@@ -155,7 +155,28 @@ class MainWindow(QtWidgets.QMainWindow):
         grid.addWidget(self.cb_preset, 3, 1)
         grid.addWidget(QtWidgets.QLabel("Physics CPU threads"), 4, 0)
         grid.addWidget(self.sp_threads, 4, 1)
+        self.lbl_predict = QtWidgets.QLabel()
+        self.lbl_predict.setWordWrap(True)
+        self.lbl_predict.setToolTip(
+            "Outcome predictor (v3 phase 3b): a model trained on the overnight sweep forecasts what a "
+            "run with these settings will do by t = 3, before you press Start. It only knows the "
+            "region the sweep covered and says so when you leave it.")
+        grid.addWidget(self.lbl_predict, 5, 0, 1, 2)
+        self._update_prediction()
         return g
+
+    def _update_prediction(self):
+        try:
+            from ..analysis.explain import NAMES
+            from ..analysis.model import format_prediction, predict_outcome
+            pred = predict_outcome(dataclasses.asdict(self.setup), dataclasses.asdict(self.live))
+        except Exception as exc:  # noqa: BLE001 - a missing/broken model must not break the window
+            self.lbl_predict.setText(f"Predicted outcome: unavailable ({type(exc).__name__})")
+            return
+        if pred is None:
+            self.lbl_predict.setText("Predicted outcome: no model trained yet (tools/train.py)")
+            return
+        self.lbl_predict.setText("<b>Predicted outcome by t = 3:</b> " + format_prediction(pred, NAMES))
 
     def _view_group(self):
         g = QtWidgets.QGroupBox("View")
@@ -222,8 +243,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _on_live(self, name, value):
         self.client.send("live", dataclasses.asdict(self.live))
+        self._update_prediction()
 
     def _on_setup(self, name, value):
+        self._update_prediction()
         self.btn_reset.setText("Reset  (apply new setup)")
         self.btn_reset.setStyleSheet("font-weight: bold; color: #e8a33d;")
 
@@ -259,6 +282,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.setup_controls[key].set_value(value)
         for key, value in dataclasses.asdict(self.live).items():
             self.live_controls[key].set_value(value)
+        self._update_prediction()
         self._reset()
 
     def _on_field(self, name):

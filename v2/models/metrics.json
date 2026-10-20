@@ -1,0 +1,985 @@
+{
+ "info": {
+  "version": "1.0",
+  "created": "2026-10-20T08:44:32",
+  "dataset": "dataset/sweep-2026-10-19",
+  "n_runs": 1078,
+  "hash": "60b516d31ba8",
+  "sklearn": "1.7.2",
+  "classes": [
+   "gravity_sag",
+   "kink_disruption",
+   "quiescent",
+   "radiative_collapse",
+   "resistive_diffusion",
+   "saturated_kink"
+  ]
+ },
+ "run_classifier": {
+  "params": {
+   "learning_rate": 0.05,
+   "max_leaf_nodes": 7,
+   "l2_regularization": 1.0
+  },
+  "tuning": [
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 4,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.11468677795409925,
+    "cv_log_loss_std": 0.09220302820414678,
+    "cv_accuracy": 0.9826119102029842
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 4,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.07258454471932574,
+    "cv_log_loss_std": 0.0469898731140011,
+    "cv_accuracy": 0.9814491195053098
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 7,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.11224290017666345,
+    "cv_log_loss_std": 0.08733689286620751,
+    "cv_accuracy": 0.9779741900793116
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 7,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.07010926295985556,
+    "cv_log_loss_std": 0.04543439018439273,
+    "cv_accuracy": 0.9814558408388223
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 15,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.11256281931447469,
+    "cv_log_loss_std": 0.08761918331837722,
+    "cv_accuracy": 0.980293050141148
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 15,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.07052055939162802,
+    "cv_log_loss_std": 0.04615994410955711,
+    "cv_accuracy": 0.9826051888694718
+   }
+  ],
+  "tuning_seconds": 224.3,
+  "test": {
+   "n": 216,
+   "accuracy": 0.9861111111111112,
+   "balanced_accuracy": 0.9647727272727273,
+   "macro_f1": 0.976557239057239,
+   "log_loss": 0.047332856205715694,
+   "ece": 0.011028131025192078,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 40
+    },
+    "kink_disruption": {
+     "precision": 0.9886363636363636,
+     "recall": 0.9886363636363636,
+     "f1": 0.9886363636363636,
+     "support": 88
+    },
+    "quiescent": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 18
+    },
+    "radiative_collapse": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 6
+    },
+    "resistive_diffusion": {
+     "precision": 1.0,
+     "recall": 0.8,
+     "f1": 0.8888888888888888,
+     "support": 10
+    },
+    "saturated_kink": {
+     "precision": 0.9642857142857143,
+     "recall": 1.0,
+     "f1": 0.9818181818181818,
+     "support": 54
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     40,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     87,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     0,
+     18,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     6,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0,
+     8,
+     1
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     54
+    ]
+   ]
+  },
+  "test_broad": {
+   "n": 108,
+   "accuracy": 1.0,
+   "balanced_accuracy": 1.0,
+   "macro_f1": 1.0,
+   "log_loss": 0.009175419246285703,
+   "ece": 0.008450560963072642,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 7
+    },
+    "kink_disruption": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 48
+    },
+    "quiescent": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 12
+    },
+    "radiative_collapse": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 2
+    },
+    "resistive_diffusion": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 2
+    },
+    "saturated_kink": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 37
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     7,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     48,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     12,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     37
+    ]
+   ]
+  },
+  "baseline_majority": {
+   "n": 216,
+   "accuracy": 0.4074074074074074,
+   "balanced_accuracy": 0.16666666666666666,
+   "macro_f1": 0.09649122807017545,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 40
+    },
+    "kink_disruption": {
+     "precision": 0.4074074074074074,
+     "recall": 1.0,
+     "f1": 0.5789473684210527,
+     "support": 88
+    },
+    "quiescent": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 18
+    },
+    "radiative_collapse": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "resistive_diffusion": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 10
+    },
+    "saturated_kink": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 54
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     0,
+     40,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     88,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     18,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     6,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     10,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     54,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  "permutation_importance": [
+   {
+    "input": "t_mixed",
+    "mean": 0.3458333333333334,
+    "std": 0.020709508561430588
+   },
+   {
+    "input": "m1_peak",
+    "mean": 0.27129629629629637,
+    "std": 0.024776089185666015
+   },
+   {
+    "input": "shift_peak",
+    "mean": 0.112962962962963,
+    "std": 0.016972502573910503
+   },
+   {
+    "input": "core_density_final",
+    "mean": 0.08518518518518522,
+    "std": 0.011564811108145197
+   },
+   {
+    "input": "gravity",
+    "mean": 0.00925925925925931,
+    "std": 0.006547285010986556
+   },
+   {
+    "input": "core_temp_min",
+    "mean": 0.008796296296296335,
+    "std": 0.0013888888888888952
+   },
+   {
+    "input": "m1_gamma_r2",
+    "mean": 0.006944444444444475,
+    "std": 0.0031056499687497218
+   },
+   {
+    "input": "m1_t_onset",
+    "mean": 0.006944444444444475,
+    "std": 0.002314814814814825
+   },
+   {
+    "input": "resistivity",
+    "mean": 0.006018518518518545,
+    "std": 0.0029644093691818876
+   },
+   {
+    "input": "m1_gamma",
+    "mean": 0.00555555555555558,
+    "std": 0.004036017540315456
+   },
+   {
+    "input": "nq_seed",
+    "mean": 0.0037037037037037203,
+    "std": 0.0018518518518518604
+   },
+   {
+    "input": "m1_t_peak",
+    "mean": 0.0037037037037037203,
+    "std": 0.0027777777777777905
+   }
+  ]
+ },
+ "outcome_predictor": {
+  "params": {
+   "learning_rate": 0.05,
+   "max_leaf_nodes": 4,
+   "l2_regularization": 1.0
+  },
+  "tuning": [
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 4,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.27761719577190314,
+    "cv_log_loss_std": 0.030113044881046276,
+    "cv_accuracy": 0.9199758031993547
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 4,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.246063938399023,
+    "cv_log_loss_std": 0.03258794874643317,
+    "cv_accuracy": 0.9199892458663799
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 7,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.3663987004543563,
+    "cv_log_loss_std": 0.025162893685436345,
+    "cv_accuracy": 0.9223013845947035
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 7,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.26651912574131015,
+    "cv_log_loss_std": 0.03510029761580598,
+    "cv_accuracy": 0.9234440112918403
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 15,
+    "l2_regularization": 0.0,
+    "cv_log_loss": 0.41905608598593325,
+    "cv_log_loss_std": 0.052028213134326984,
+    "cv_accuracy": 0.9188062911681678
+   },
+   {
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 15,
+    "l2_regularization": 1.0,
+    "cv_log_loss": 0.2713937325544357,
+    "cv_log_loss_std": 0.04366592240612011,
+    "cv_accuracy": 0.9118698749831967
+   }
+  ],
+  "tuning_seconds": 175.3,
+  "test": {
+   "n": 216,
+   "accuracy": 0.8796296296296297,
+   "balanced_accuracy": 0.7613776655443322,
+   "macro_f1": 0.7673332032898653,
+   "log_loss": 0.3912704700010317,
+   "ece": 0.0593080951344362,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 0.8717948717948718,
+     "recall": 0.85,
+     "f1": 0.8607594936708861,
+     "support": 40
+    },
+    "kink_disruption": {
+     "precision": 0.9560439560439561,
+     "recall": 0.9886363636363636,
+     "f1": 0.9720670391061452,
+     "support": 88
+    },
+    "quiescent": {
+     "precision": 0.6666666666666666,
+     "recall": 0.7777777777777778,
+     "f1": 0.717948717948718,
+     "support": 18
+    },
+    "radiative_collapse": {
+     "precision": 0.6,
+     "recall": 0.5,
+     "f1": 0.5454545454545454,
+     "support": 6
+    },
+    "resistive_diffusion": {
+     "precision": 0.6666666666666666,
+     "recall": 0.6,
+     "f1": 0.631578947368421,
+     "support": 10
+    },
+    "saturated_kink": {
+     "precision": 0.9019607843137255,
+     "recall": 0.8518518518518519,
+     "f1": 0.8761904761904762,
+     "support": 54
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     34,
+     2,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     87,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     0,
+     14,
+     0,
+     3,
+     1
+    ],
+    [
+     0,
+     0,
+     1,
+     3,
+     0,
+     2
+    ],
+    [
+     3,
+     0,
+     0,
+     0,
+     6,
+     1
+    ],
+    [
+     2,
+     2,
+     2,
+     2,
+     0,
+     46
+    ]
+   ]
+  },
+  "test_broad": {
+   "n": 108,
+   "accuracy": 0.9074074074074074,
+   "balanced_accuracy": 0.7404547404547405,
+   "macro_f1": 0.6803949553561192,
+   "log_loss": 0.2108657785457238,
+   "ece": 0.04988520508863757,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 1.0,
+     "recall": 0.8571428571428571,
+     "f1": 0.9230769230769231,
+     "support": 7
+    },
+    "kink_disruption": {
+     "precision": 0.9795918367346939,
+     "recall": 1.0,
+     "f1": 0.9896907216494846,
+     "support": 48
+    },
+    "quiescent": {
+     "precision": 0.6666666666666666,
+     "recall": 0.6666666666666666,
+     "f1": 0.6666666666666666,
+     "support": 12
+    },
+    "radiative_collapse": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 2
+    },
+    "resistive_diffusion": {
+     "precision": 0.4,
+     "recall": 1.0,
+     "f1": 0.5714285714285714,
+     "support": 2
+    },
+    "saturated_kink": {
+     "precision": 0.9444444444444444,
+     "recall": 0.918918918918919,
+     "f1": 0.9315068493150684,
+     "support": 37
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     6,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     48,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     8,
+     0,
+     3,
+     1
+    ],
+    [
+     0,
+     0,
+     1,
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     2,
+     0
+    ],
+    [
+     0,
+     1,
+     2,
+     0,
+     0,
+     34
+    ]
+   ]
+  },
+  "baseline_majority": {
+   "n": 216,
+   "accuracy": 0.4074074074074074,
+   "balanced_accuracy": 0.16666666666666666,
+   "macro_f1": 0.09649122807017545,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 40
+    },
+    "kink_disruption": {
+     "precision": 0.4074074074074074,
+     "recall": 1.0,
+     "f1": 0.5789473684210527,
+     "support": 88
+    },
+    "quiescent": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 18
+    },
+    "radiative_collapse": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "resistive_diffusion": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 10
+    },
+    "saturated_kink": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 54
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     0,
+     40,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     88,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     18,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     6,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     10,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     54,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  "baseline_nq_rule": {
+   "n": 216,
+   "accuracy": 0.6805555555555556,
+   "balanced_accuracy": 0.4598765432098766,
+   "macro_f1": 0.35675406632145173,
+   "per_class": {
+    "gravity_sag": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 40
+    },
+    "kink_disruption": {
+     "precision": 0.8888888888888888,
+     "recall": 1.0,
+     "f1": 0.9411764705882353,
+     "support": 88
+    },
+    "quiescent": {
+     "precision": 0.3103448275862069,
+     "recall": 1.0,
+     "f1": 0.47368421052631576,
+     "support": 18
+    },
+    "radiative_collapse": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "resistive_diffusion": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 10
+    },
+    "saturated_kink": {
+     "precision": 0.6949152542372882,
+     "recall": 0.7592592592592593,
+     "f1": 0.7256637168141593,
+     "support": 54
+    }
+   },
+   "confusion_labels": [
+    "gravity_sag",
+    "kink_disruption",
+    "quiescent",
+    "radiative_collapse",
+    "resistive_diffusion",
+    "saturated_kink"
+   ],
+   "confusion": [
+    [
+     0,
+     3,
+     25,
+     0,
+     0,
+     12
+    ],
+    [
+     0,
+     88,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     18,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     3,
+     0,
+     0,
+     3
+    ],
+    [
+     0,
+     0,
+     7,
+     0,
+     0,
+     3
+    ],
+    [
+     0,
+     8,
+     5,
+     0,
+     0,
+     41
+    ]
+   ]
+  },
+  "permutation_importance": [
+   {
+    "input": "nq_seed",
+    "mean": 0.5148148148148148,
+    "std": 0.022755936532304653
+   },
+   {
+    "input": "gravity",
+    "mean": 0.1462962962962963,
+    "std": 0.016972502573910527
+   },
+   {
+    "input": "resistivity",
+    "mean": 0.05370370370370375,
+    "std": 0.010798059064528336
+   },
+   {
+    "input": "cooling",
+    "mean": 0.030092592592592626,
+    "std": 0.012971227524186947
+   },
+   {
+    "input": "t_cooling",
+    "mean": 0.0,
+    "std": 0.0
+   },
+   {
+    "input": "kadomtsev_margin",
+    "mean": 0.0,
+    "std": 0.0
+   },
+   {
+    "input": "seed_n",
+    "mean": 0.0,
+    "std": 0.0
+   },
+   {
+    "input": "lundquist",
+    "mean": 0.0,
+    "std": 0.0
+   },
+   {
+    "input": "axial_field",
+    "mean": -0.0018518518518518378,
+    "std": 0.011929721043263997
+   },
+   {
+    "input": "q_a",
+    "mean": -0.005555555555555547,
+    "std": 0.00539902953226415
+   },
+   {
+    "input": "t_resistive",
+    "mean": -0.009259259259259212,
+    "std": 0.004140866624999591
+   },
+   {
+    "input": "current",
+    "mean": -0.009722222222222198,
+    "std": 0.0108475689943148
+   }
+  ]
+ },
+ "twins": {
+  "n": 51,
+  "agree": 51
+ },
+ "dropped_classes": {}
+}

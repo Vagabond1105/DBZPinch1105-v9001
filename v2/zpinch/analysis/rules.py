@@ -186,7 +186,8 @@ def detect(h, f):
             win = (t >= t_sat0) & (t <= t_sat0 + SAT_WINDOW)
             i_sat = int(np.flatnonzero(win)[np.argmax(m1[win])])
             found["saturated_kink"] = {"m1_peak": f["m1_peak"], "m1_sat": float(m1[i_sat]),
-                                       "t_sat": float(t[i_sat]), "m1_final": f["m1_final"]}
+                                       "t_sat": float(t[i_sat]), "m1_final": f["m1_final"],
+                                       "t_nonlinear": t_nl, "t_mixed": f["t_mixed"]}
             phases.append(_phase(
                 "saturated_kink", t_sat0, t_end,
                 "the kink stops growing and the column survives as a bent helix",
@@ -271,8 +272,17 @@ def borderline(label, f, found):
         checks = checks + [("m1_peak", NONLINEAR)]
     if label == "gravity_sag" and "saturated_kink" in found:
         checks = checks + [("m1_peak", NONLINEAR)]
-    return [f"{name} = {f[name]:.3g} is within {BORDER:.2f}x of its threshold {thr:g}"
-            for name, thr in checks if _near(f[name], thr)]
+    notes = [f"{name} = {f[name]:.3g} is within {BORDER:.2f}x of its threshold {thr:g}"
+             for name, thr in checks if _near(f[name], thr)]
+    # tear-up delay: the column spread DISRUPT_DELAY after the kink went
+    # nonlinear (found by the run classifier disagreeing on r00817: 0.97)
+    ev = found.get(label, {}) if label in ("kink_disruption", "saturated_kink") else {}
+    if ev and math.isfinite(ev.get("t_nonlinear", math.nan)) and math.isfinite(ev.get("t_mixed", math.nan)):
+        delay = ev["t_mixed"] - ev["t_nonlinear"]
+        if _near(delay, DISRUPT_DELAY):
+            notes.append(f"the column spread {delay:.2f} time units after the kink went nonlinear; "
+                         f"the cut-off for a disruption is {DISRUPT_DELAY:g}")
+    return notes
 
 
 def health(f, meta):

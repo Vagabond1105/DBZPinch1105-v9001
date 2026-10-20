@@ -6,7 +6,8 @@ rendering, tracer particles and exact energy bookkeeping.
 
 Full documentation (Obsidian notes) lives in `../docs/`:
 `01 - Vision`, `02 - V1 and Why It Failed`, `03 - V2 Changes and Fixes`, `04 - V2 Complete Guide`,
-`05 - V3 Plan`, `05.1 - V3 Phase 1 Results` (run labelling and explanations).
+`05 - V3 Plan`, `05.1 - V3 Phase 1 Results` (run labelling and explanations),
+`05.2 - V3 Phase 3 Machine Learning` (run classifier + outcome predictor, from zero).
 
 ## Run
 
@@ -16,6 +17,7 @@ Full documentation (Obsidian notes) lives in `../docs/`:
 ./run.sh --headless --t-end 3 --preset "Saturated kink (Bz = 0.6)" --analyse   # + outcome report
 ./test.sh                   # physics + analysis tests (55 tests, ~1 min)
 .venv/bin/python tools/analyse.py dataset/sweep-2026-10-19        # label a whole sweep
+.venv/bin/python tools/train.py dataset/sweep-2026-10-19          # train + evaluate the models
 ```
 
 First launch compiles the numba kernels (~20-40 s, cached afterwards).
@@ -37,10 +39,12 @@ zpinch/solver.py        generic 3D MHD solver (SSP-RK2, ghost cells, dt, energy/
 zpinch/pinch.py         Z-pinch problem: Bennett equilibrium, drive circuit, tracers, diagnostics
 zpinch/params.py        setup + live parameters (metadata drives the GUI)
 zpinch/diagnostics.py   plots + zip export
-zpinch/analysis/        v3: features, physics rules (outcome class + timeline), explanations
+zpinch/analysis/        v3: features, physics rules (outcome class + timeline), explanations, ML models
+models/                 v3: trained models + MODEL_CARD.md, confusion/calibration/outcome-map figures
 zpinch/gui/             Qt window, vispy 3D view, controls, physics worker process
 tools/sweep.py          v3: overnight parameter sweep -> dataset/ (resumable)
 tools/analyse.py        v3: label/explain one saved run or a whole sweep
+tools/train.py          v3: train/evaluate run classifier (a) and outcome predictor (b)
 tests/                  Sod, Alfven wave, diffusion, energy budget, equilibrium, kink growth; run analysis
 examples/               toy_advection.py, toy_muscl.py - tiny NumPy demos used in the docs
 ```

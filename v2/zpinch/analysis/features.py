@@ -134,6 +134,63 @@ def derived_numbers(sim):
     }
 
 
+def derived_from_params(setup, live):
+    """
+    derived_numbers() without building a simulation: the same formulas as
+    ZPinch.__init__ (grid size, Bennett current, peak field, Alfven speed)
+    for setup/live dicts, so the GUI can predict while sliders move.
+    """
+    from ..params import RESOLUTIONS
+    N = RESOLUTIONS[setup["resolution"]]
+    nz = max(4, int(round(N * setup["length"] / 2.0)) * 2)
+    dx = 1.0 / N
+    a = float(setup["pinch_radius"])
+    rho0 = T0 = 1.0
+    k = a * math.sqrt(2.0 * rho0 * T0)
+    Bt = k / (2.0 * a)
+    v_a = Bt / math.sqrt(rho0)
+    Lz = nz * dx
+    Bz = setup["axial_field"] * Bt
+    eta = live["resistivity"]
+    p_a = T0 * (setup["background_density"] + rho0 / 4.0)
+    return {
+        "Lz": Lz, "grid": [N, N, nz], "dx": dx,
+        "I_bennett": 2.0 * math.pi * k, "B_peak": Bt, "v_alfven": v_a, "t_alfven": a / v_a,
+        "q_a": 2.0 * math.pi * a * Bz / (Lz * Bt),
+        "kadomtsev_margin": Bz ** 2 / (Bt ** 2 / 2.0),
+        "lundquist": a * v_a / eta if eta > 0 else float("inf"),
+        "beta_a": p_a / ((Bt ** 2 + Bz ** 2) / 2.0),
+    }
+
+
+def start_features(setup, live, der=None):
+    """
+    Everything known before pressing Start: the parameters and the
+    stability numbers (FEATURE_NAMES up to t_cooling, plus seed_n, nq_seed).
+    This is what the outcome predictor (model.py) sees.
+    """
+    der = der or derived_from_params(setup, live)
+    a = float(setup["pinch_radius"])
+    f = {}
+    for k in ("current", "rise_time", "resistivity", "viscosity", "cooling", "gravity"):
+        f[k] = float(live[k])
+    for k in ("axial_field", "length", "pinch_radius", "background_density"):
+        f[k] = float(setup[k])
+    I = max(f["current"], 1e-6)
+    f["q_a"] = float(der["q_a"])
+    f["q_a_driven"] = f["q_a"] / I
+    f["kadomtsev_margin"] = float(der["kadomtsev_margin"])
+    f["kadomtsev_driven"] = f["kadomtsev_margin"] / I ** 2
+    f["lundquist"] = float(der["lundquist"])
+    f["beta_a"] = float(der["beta_a"])
+    f["t_alfven"] = float(der["t_alfven"])
+    f["t_resistive"] = a * a / f["resistivity"] if f["resistivity"] > 0 else math.inf
+    f["t_cooling"] = 1.0 / ((GAMMA_GAS - 1.0) * f["cooling"]) if f["cooling"] > 0 else math.inf
+    f["seed_n"] = float(max(1, int(round(float(der["Lz"]) / (5.0 * a)))))   # as ZPinch._init_state
+    f["nq_seed"] = f["seed_n"] * f["q_a"]
+    return f
+
+
 def run_from_sim(sim):
     """(history, meta) for a live ZPinch, in the same form as a dataset run."""
     from dataclasses import asdict
@@ -207,27 +264,9 @@ def _rate_max(t, y, window=0.1):
 
 def compute(h, meta):
     """Feature dict (FEATURE_NAMES, all plain floats) for one run."""
-    setup, live, der = meta["setup"], meta["live"], meta["derived"]
     t = np.asarray(h["t"], dtype=float)
-    a = float(setup["pinch_radius"])
     E0 = float(h["total"][0])
-    f = {}
-
-    for k in ("current", "rise_time", "resistivity", "viscosity", "cooling", "gravity"):
-        f[k] = float(live[k])
-    for k in ("axial_field", "length", "pinch_radius", "background_density"):
-        f[k] = float(setup[k])
-
-    I = max(f["current"], 1e-6)
-    f["q_a"] = float(der["q_a"])
-    f["q_a_driven"] = f["q_a"] / I
-    f["kadomtsev_margin"] = float(der["kadomtsev_margin"])
-    f["kadomtsev_driven"] = f["kadomtsev_margin"] / I ** 2
-    f["lundquist"] = float(der["lundquist"])
-    f["beta_a"] = float(der["beta_a"])
-    f["t_alfven"] = float(der["t_alfven"])
-    f["t_resistive"] = a * a / f["resistivity"] if f["resistivity"] > 0 else math.inf
-    f["t_cooling"] = 1.0 / ((GAMMA_GAS - 1.0) * f["cooling"]) if f["cooling"] > 0 else math.inf
+    f = start_features(meta["setup"], meta["live"], meta["derived"])
 
     m1 = h["m1"]
     ipk = int(np.argmax(m1))
@@ -241,8 +280,6 @@ def compute(h, meta):
     pw = np.array([h[f"m1_n{n}"][ipk] ** 2 for n in (1, 2, 3)])
     f["m1_dominant_n"] = float(np.argmax(pw) + 1)
     f["m1_high_n_frac"] = float(pw[1:].sum() / pw.sum()) if pw.sum() > 0 else 0.0
-    f["seed_n"] = float(max(1, int(round(float(der["Lz"]) / (5.0 * a)))))   # as ZPinch._init_state
-    f["nq_seed"] = f["seed_n"] * f["q_a"]
 
     m0 = h["m0"]
     jpk = int(np.argmax(m0))
@@ -256,7 +293,7 @@ def compute(h, meta):
     kpk = int(np.argmax(sh))
     f["shift_peak"], f["shift_t_peak"], f["shift_final"] = float(sh[kpk]), float(t[kpk]), float(sh[-1])
 
-    R = np.asarray(h["radius"]) / a
+    R = np.asarray(h["radius"]) / f["pinch_radius"]
     f["radius_max"], f["radius_min"], f["radius_final"] = float(R.max()), float(R.min()), float(R[-1])
     f["radius_rate_max"] = _rate_max(t, R)
     f["t_mixed"] = first_time(t, R >= MIXED_RADIUS)

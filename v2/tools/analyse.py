@@ -62,7 +62,7 @@ def sweep(d):
     os.makedirs(out, exist_ok=True)
     rows = []
     for name in files:
-        r = analyse_npz(os.path.join(runs_dir, name))
+        r = analyse_npz(os.path.join(runs_dir, name), with_ml=False)
         with np.load(os.path.join(runs_dir, name)) as z:
             meta = json.loads(str(z["meta"]))
         rows.append({"id": meta["id"], "kind": meta["kind"], "stratum": meta["stratum"],

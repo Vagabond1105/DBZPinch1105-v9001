@@ -340,8 +340,32 @@ def causes(h, f, cls):
 # entry points
 # =====================================================
 
-def analyse(h, meta):
-    """Full analysis of one run (history at DT_SAVE spacing + meta)."""
+def ml_view(f, cls, meta):
+    """
+    The trained models' opinion, if they exist (tools/train.py). Secondary
+    by design: the causes above come from physics, this is a cross-check.
+    """
+    try:
+        from . import model as MD
+        a = MD.classify_run(f)
+        b = MD.predict_outcome(meta["setup"], meta["live"])
+    except ImportError:          # scikit-learn not installed
+        return None
+    if a is None and b is None:
+        return None
+    out = {"run_classifier": a, "outcome_predictor": b}
+    if a is not None:
+        top = a["probs"][0][0]
+        out["agrees"] = top == cls["label"]
+        out["rule_label_prob"] = dict(a["probs"]).get(cls["label"], 0.0)
+    return out
+
+
+def analyse(h, meta, with_ml=True):
+    """
+    Full analysis of one run (history at DT_SAVE spacing + meta). with_ml=False
+    skips the models' opinion: training data must come from the rules alone.
+    """
     f = FE.compute(h, meta)
     cls = RU.classify(h, f, meta)
     return {
@@ -361,6 +385,7 @@ def analyse(h, meta):
         "energy_total": energy_between(h, 0.0, f["t_final"]),
         "features": f,
         "evidence": cls["evidence"],
+        "ml": ml_view(f, cls, meta) if with_ml else None,
     }
 
 
@@ -369,9 +394,9 @@ def analyse_sim(sim):
     return analyse(h, meta)
 
 
-def analyse_npz(path):
+def analyse_npz(path, with_ml=True):
     h, meta = FE.load_npz(path)
-    return analyse(h, meta)
+    return analyse(h, meta, with_ml)
 
 
 def _num(x):
@@ -406,6 +431,19 @@ def format_report(r):
         mark = "ok" if c["agree"] else "!!"
         L.append(f"  {mark} {c['name']} = {_num(c['value'])}")
         L.append(f"       {c['expect']}; {c['note']}")
+    ml = r.get("ml")
+    if ml:
+        from .model import format_prediction
+        L += ["", "Machine-learning view (a cross-check; the causes above come from physics)"]
+        a = ml.get("run_classifier")
+        if a:
+            verdict = ("agrees with the rules" if ml["agrees"] else
+                       f"DISAGREES with the rules, which gave {NAMES[r['label']]} "
+                       f"({100 * ml['rule_label_prob']:.0f} %): a borderline or unusual run")
+            L.append(f"  run classifier (a):    {format_prediction(a, NAMES)}  - {verdict}")
+        b = ml.get("outcome_predictor")
+        if b:
+            L.append(f"  before the run, (b):   {format_prediction(b, NAMES)}")
     e = r["energy_total"]
     L += ["", "Energy budget, whole run (fractions of the starting energy E0)",
           "  " + "  ".join(f"{k} {e[k]:+.3f}" for k in STORES) +
