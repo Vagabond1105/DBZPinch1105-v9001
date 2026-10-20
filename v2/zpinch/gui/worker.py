@@ -7,9 +7,10 @@ speed. Communication is message passing:
 
   UI -> worker : ("rebuild", setup_dict, live_dict), ("live", live_dict),
                  ("run", bool), ("step", n), ("field", name), ("ack",), ("threads", n),
-                 ("export", path), ("quit",)
+                 ("export", path), ("analyse",), ("quit",)
   worker -> UI : ("ready", geometry_dict), ("snapshot", snap_dict, history_rows),
-                 ("error", text), ("exported", path), ("export_failed", text)
+                 ("error", text), ("exported", path), ("export_failed", text),
+                 ("analysis", report_text), ("analysis_failed", text)
 
 Snapshots are flow-controlled: a new one is only sent after the UI has
 acknowledged the previous one, so a slow UI never builds up a backlog.
@@ -48,6 +49,7 @@ def worker_main(cmd_q, out_q, n_threads):
     from ..params import SetupParams, LiveParams
     from ..pinch import ZPinch, HISTORY_KEYS
     from ..diagnostics import export_zip
+    from ..analysis import analyse_sim, format_report
 
     sim = None
     running = False
@@ -108,9 +110,12 @@ def worker_main(cmd_q, out_q, n_threads):
                 elif kind == "export" and sim is not None:
                     export_zip(sim, msg[1])
                     out_q.put(("exported", msg[1]))
+                elif kind == "analyse" and sim is not None:
+                    out_q.put(("analysis", format_report(analyse_sim(sim))))
             except Exception:
-                if kind == "export":
-                    out_q.put(("export_failed", traceback.format_exc()))
+                if kind in ("export", "analyse"):
+                    failed = "export_failed" if kind == "export" else "analysis_failed"
+                    out_q.put((failed, traceback.format_exc()))
                 else:
                     out_q.put(("error", traceback.format_exc()))
                     running = False

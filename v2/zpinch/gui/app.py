@@ -131,6 +131,10 @@ class MainWindow(QtWidgets.QMainWindow):
         btn_defaults.clicked.connect(self._reset_defaults)
         self.btn_export = QtWidgets.QPushButton("Export data...")
         self.btn_export.clicked.connect(self._export)
+        self.btn_analyse = QtWidgets.QPushButton("Finish && analyse")
+        self.btn_analyse.setToolTip("Pause, then label the run so far (outcome class, timeline, "
+                                    "causes from the energy budget and stability criteria).")
+        self.btn_analyse.clicked.connect(self._analyse)
         self.sp_threads = QtWidgets.QSpinBox()
         self.sp_threads.setRange(1, os.cpu_count() or 1)
         self.sp_threads.setValue(default_threads())
@@ -145,7 +149,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cb_preset.addItems(list(PRESETS))
         self.cb_preset.setToolTip("Load a named starting point (all other values back to defaults) and reset.")
         self.cb_preset.activated[str].connect(self._load_preset)
-        grid.addWidget(self.btn_export, 2, 0, 1, 2)
+        grid.addWidget(self.btn_analyse, 2, 0)
+        grid.addWidget(self.btn_export, 2, 1)
         grid.addWidget(QtWidgets.QLabel("Preset"), 3, 0)
         grid.addWidget(self.cb_preset, 3, 1)
         grid.addWidget(QtWidgets.QLabel("Physics CPU threads"), 4, 0)
@@ -288,6 +293,30 @@ class MainWindow(QtWidgets.QMainWindow):
             self.client.send("export", path)
             self.statusBar().showMessage(f"Exporting to {path} ...")
 
+    def _analyse(self):
+        if self.geom is None:
+            return
+        if self.running:
+            self._set_running(False)
+        self.client.send("analyse")
+        self.statusBar().showMessage("Analysing the run ...")
+
+    def _show_analysis(self, text):
+        self.statusBar().clearMessage()
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle("Run analysis")
+        dlg.resize(1100, 700)
+        lay = QtWidgets.QVBoxLayout(dlg)
+        box = QtWidgets.QPlainTextEdit(text)
+        box.setReadOnly(True)
+        box.setLineWrapMode(QtWidgets.QPlainTextEdit.WidgetWidth)
+        box.setStyleSheet("font-family: monospace;")
+        lay.addWidget(box)
+        btn = QtWidgets.QPushButton("Close")
+        btn.clicked.connect(dlg.accept)
+        lay.addWidget(btn)
+        dlg.show()
+
     # =====================================================
     # worker messages
     # =====================================================
@@ -301,6 +330,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 self._on_snapshot(msg[1], msg[2])
             elif kind == "error":
                 self._on_error(msg[1])
+            elif kind == "analysis":
+                self._show_analysis(msg[1])
+            elif kind == "analysis_failed":
+                self.statusBar().clearMessage()
+                QtWidgets.QMessageBox.warning(self, "Analysis failed", msg[1].strip().splitlines()[-1])
             elif kind == "exported":
                 self.statusBar().showMessage(f"Exported to {msg[1]}", 8000)
             elif kind == "export_failed":

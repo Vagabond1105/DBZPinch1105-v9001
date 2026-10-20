@@ -5,15 +5,17 @@ equilibrium driven by an external circuit, with live controls, GPU volume
 rendering, tracer particles and exact energy bookkeeping.
 
 Full documentation (Obsidian notes) lives in `../docs/`:
-`01 - Vision`, `02 - V1 and Why It Failed`, `03 - V2 Changes and Fixes`, `04 - V2 Complete Guide`.
+`01 - Vision`, `02 - V1 and Why It Failed`, `03 - V2 Changes and Fixes`, `04 - V2 Complete Guide`,
+`05 - V3 Plan`, `05.1 - V3 Phase 1 Results` (run labelling and explanations).
 
 ## Run
 
 ```bash
 ./run.sh                    # GUI
 ./run.sh --headless --t-end 2 --set current=1.5 axial_field=0.8 --export run.zip
-./run.sh --headless --t-end 3 --preset "Saturated kink (Bz = 0.6)"
-./test.sh                   # physics validation suite (27 tests, ~20-30 s)
+./run.sh --headless --t-end 3 --preset "Saturated kink (Bz = 0.6)" --analyse   # + outcome report
+./test.sh                   # physics + analysis tests (55 tests, ~1 min)
+.venv/bin/python tools/analyse.py dataset/sweep-2026-10-19        # label a whole sweep
 ```
 
 First launch compiles the numba kernels (~20-40 s, cached afterwards).
@@ -35,7 +37,10 @@ zpinch/solver.py        generic 3D MHD solver (SSP-RK2, ghost cells, dt, energy/
 zpinch/pinch.py         Z-pinch problem: Bennett equilibrium, drive circuit, tracers, diagnostics
 zpinch/params.py        setup + live parameters (metadata drives the GUI)
 zpinch/diagnostics.py   plots + zip export
+zpinch/analysis/        v3: features, physics rules (outcome class + timeline), explanations
 zpinch/gui/             Qt window, vispy 3D view, controls, physics worker process
-tests/                  Sod, Alfven wave, diffusion, energy budget, equilibrium, kink growth
+tools/sweep.py          v3: overnight parameter sweep -> dataset/ (resumable)
+tools/analyse.py        v3: label/explain one saved run or a whole sweep
+tests/                  Sod, Alfven wave, diffusion, energy budget, equilibrium, kink growth; run analysis
 examples/               toy_advection.py, toy_muscl.py - tiny NumPy demos used in the docs
 ```

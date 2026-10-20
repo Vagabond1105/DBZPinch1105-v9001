@@ -12,12 +12,15 @@ Series: [[01 - Vision]] → [[02 - V1 and Why It Failed]] → [[03 - V2 Changes 
 
 ---
 
-## Status (2026-10-15)
+## Status (2026-10-20)
 
 - **Phase 0 done:** commit `a85229e`, 27/27 tests passing.
-- **Next session (2026-10-16):** build the sweep tool (`tools/sweep.py`), benchmark parallel jobs, do the 20-run rehearsal, then **launch the ~10 h overnight sweep**.
-- The sweep saves each run's **starting parameters + full down-sampled history** (all `HISTORY_KEYS`, including the new per-n mode amplitudes), so Phase 1 (rules, features) and Phase 3 (models) can be built *after* the night, on the saved data, without re-running anything.
-- **Before launching:** laptop plugged in, sleep/suspend disabled, GUI closed, nothing heavy running.
+- **Phase 2 sweep tool done:** `v2/tools/sweep.py` (commit `11ad9fb`), with subcommands `plan`, `bench`, `run`, `status` and `stop`. Runs are resumable and saved in `v2/dataset/` (git-ignored).
+- **Parallel benchmark (default run, to t = 1):** 12 jobs × 1 thread is fastest, ≈10 % ahead of 6 × 2 and ≈2.8× one job on 12 threads. The laptop had dropped into the *power-saver* profile (low battery), which halved the speed (49 vs 20 ms/step). The sweep runs with `--keep-performance`.
+- **Rehearsal (20 runs + 2 × 48³ twins, with a stop/resume in the middle):** 22/22 ok. Swept runs cost **~3× the default run**: median 187 s each at full load, 48³ twins ≈1000 s, so ≈230 runs/h, not the 300–700 of §6.4.
+- **Overnight sweep, 2026-10-19 23:46 → 2026-10-20 07:08** in `v2/dataset/sweep-2026-10-19/`. It stopped early when the laptop was shut down (it was hot): **1109 runs** (1058 base + 51 of the 60 48³ twins), 0 real failures, 16 partial (wall-clock cap). It is resumable with the same `run` command. The early-stop rules never fired, because a disruption shrinks the radius-relative kink amplitude (see [[05.1 - V3 Phase 1 Results]] §4).
+- **Phase 1 done (2026-10-20):** `v2/zpinch/analysis/` (features, rules, explain), `tools/analyse.py`, `--analyse`, *Finish & analyse* button, analysis in exports; 55/55 tests. Labels: disruption 435, saturated kink 259, gravity sag 198, quiescent 89, resistive 47, radiative collapse 30, sausage 0. The labels reproduce Kruskal–Shafranov ($nq$ of the seeded helix) cleanly; 50/51 twins keep their label at 48³. **Full write-up: [[05.1 - V3 Phase 1 Results]].** The class list in §3 below was revised against the data (sausage never dominates; compression is a phase, not a class).
+- **Next:** Phase 3 (models), which needs `scikit-learn`. First decide whether to resume the sweep for more radiative/resistive runs.
 - **Who builds what:** Claude writes all the code (agentically engineered). Every threshold is commented with its reason, each phase gets a plain-language summary, and note 06 is written for someone starting from zero.
 
 ## 0. Decisions already made
@@ -73,6 +76,9 @@ Known v2 weak spots (**fixed in Phase 0, 2026-10-15**: per-n mode diagnostics, s
 ---
 
 ## 3. Outcome classes (draft taxonomy)
+
+> [!note] Revised by the data (Phase 1)
+> The final class list and the rules behind it are in [[05.1 - V3 Phase 1 Results]] §3. Changes: *compression / bounce* became an early **phase**, not a class; *sausage-dominated* is kept but no run in the sweep qualifies; *mixed / unclassified* is a **low-confidence flag** on the nearest class, not a class of its own.
 
 | # | Class | Signature in the data |
 |---|---|---|

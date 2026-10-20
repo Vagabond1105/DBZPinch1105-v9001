@@ -49,6 +49,8 @@ import numpy as np
 V2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, V2)
 
+from zpinch.analysis.features import derived_numbers  # noqa: E402  (moved there for v3 phase 1)
+
 GRID_BASE = "Very fast (32 x 32 x 48)"     # the GUI default, see plan section 6.5
 GRID_CHECK = "Fast (48 x 48 x 72)"         # resolution check twins (~5x the cost)
 T_END = 3.0                                # cap on simulated time (plan section 6.5)
@@ -202,23 +204,6 @@ def make_plan(n, res_check, seed, gap):
 # =====================================================
 # one run (inside a worker)
 # =====================================================
-
-def derived_numbers(sim):
-    """Stability numbers at t = 0 (plan section 4), all from the setup alone."""
-    s, lv, sv = sim.setup, sim.live, sim.solver
-    Lz = sv.nz * sv.dx
-    Bt = sim.B_peak                         # B_theta at r = a
-    Bz = s.axial_field * Bt
-    p_a = sim.T0 * (sim.rho_bg + sim.RHO0 / 4.0)   # Bennett profile at r = a
-    return {
-        "Lz": Lz, "grid": [sv.nx, sv.ny, sv.nz], "dx": sv.dx,
-        "I_bennett": sim.I_bennett, "B_peak": Bt, "v_alfven": sim.v_alfven, "t_alfven": sim.t_alfven,
-        "q_a": 2.0 * math.pi * sim.a * Bz / (Lz * Bt),
-        "kadomtsev_margin": Bz ** 2 / (Bt ** 2 / 2.0),     # > 1: sausage-stable at the edge
-        "lundquist": sim.a * sim.v_alfven / lv.resistivity if lv.resistivity > 0 else float("inf"),
-        "beta_a": p_a / ((Bt ** 2 + Bz ** 2) / 2.0),
-    }
-
 
 class EarlyStop:
     def __init__(self):
