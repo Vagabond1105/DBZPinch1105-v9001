@@ -6,6 +6,7 @@ Z-Pinch MHD v2 - entry point.
     python main.py --headless --t-end 3 --preset "Saturated kink (Bz = 0.6)"
     python main.py --headless --t-end 2 --export run.zip --set current=1.5 resolution="Medium (64 x 64 x 96)"
     python main.py --headless --t-end 3 --analyse      # then label and explain the run (v3 phase 1)
+    python main.py --headless --t-end 3 --report run.html   # ... and save the HTML report (phase 5)
 """
 
 import argparse
@@ -85,9 +86,16 @@ def headless(args):
             next_print += args.print_every
     wall = time.perf_counter() - t0
     print(f"{sv.n_steps} steps in {wall:.1f} s ({1000 * wall / max(sv.n_steps, 1):.1f} ms/step)")
-    if args.analyse:
-        from zpinch.analysis import analyse_sim, format_report
-        print("\n" + format_report(analyse_sim(sim)))
+    if args.analyse or args.report:
+        from zpinch.analysis import features as FE
+        from zpinch.analysis.report import bundle
+        b = bundle(*FE.run_from_sim(sim))
+        if args.analyse:
+            print("\n" + b["text"])
+        if args.report:
+            with open(args.report, "w", encoding="utf-8") as fh:
+                fh.write(b["html"])
+            print("report", args.report)
     if args.export:
         from zpinch.diagnostics import export_zip
         export_zip(sim, args.export)
@@ -103,6 +111,8 @@ def main():
     ap.add_argument("--export", help="zip file to export to after a headless run")
     ap.add_argument("--analyse", action="store_true",
                     help="after a headless run, print the outcome class, timeline and causes")
+    ap.add_argument("--report", metavar="PATH.html",
+                    help="after a headless run, save the standalone HTML report (write-up, figures, data)")
     ap.add_argument("--preset", help="start from a named preset (zpinch/params.py PRESETS); "
                                       "--set overrides are applied on top")
     ap.add_argument("--set", nargs="*", metavar="NAME=VALUE",

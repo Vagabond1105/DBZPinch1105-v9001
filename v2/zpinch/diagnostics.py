@@ -105,7 +105,7 @@ def _json_safe(x):
 
 
 def export_zip(sim, path, include_fields=True):
-    """CSV time series, parameters, PNG plots, the run analysis and (optionally) the final 3D fields."""
+    """CSV time series, parameters, PNG plots, the run report (HTML, text, JSON, feature CSV) and (optionally) the final 3D fields."""
     h = history_arrays(sim.history)
     plots = {
         "energy.png": lambda ax: plot_energy(ax, h),
@@ -134,10 +134,13 @@ def export_zip(sim, path, include_fields=True):
         zf.writestr("timeseries.csv", buf.getvalue())
         zf.writestr("parameters.json", json.dumps(meta, indent=2))
         try:
-            from .analysis import analyse_sim, format_report
-            report = analyse_sim(sim)
-            zf.writestr("analysis.txt", format_report(report))
-            zf.writestr("analysis.json", json.dumps(report, indent=1, default=_json_safe))
+            from .analysis import features as FE
+            from .analysis.report import bundle
+            b = bundle(*FE.run_from_sim(sim))
+            zf.writestr("report.html", b["html"])
+            zf.writestr("analysis.txt", b["text"])
+            zf.writestr("analysis.json", json.dumps(b["report"], indent=1, default=_json_safe))
+            zf.writestr("features.csv", b["csv"])
         except Exception as exc:  # noqa: BLE001 - a failed analysis must not lose the data export
             zf.writestr("analysis.txt", f"analysis failed: {type(exc).__name__}: {exc}")
         for name, draw in plots.items():

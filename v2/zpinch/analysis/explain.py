@@ -107,6 +107,30 @@ def who_paid(d):
 # stability criteria
 # =====================================================
 
+def _nq_band(nq):
+    """The sweep's counts for the n q band holding nq (library/stats.json, tools/library.py stats)."""
+    from .writeup import load_stats
+    for b in (load_stats() or {}).get("nq_bands", []):
+        if b["lo"] <= nq < b["hi"]:
+            return b
+    return None
+
+
+def _sweep_says(band, what):
+    """' (sweep: 70 of 70 such runs saturated)', or '' without statistics."""
+    if not band or not band["runs"]:
+        return ""
+    n, lab = band["runs"], band["labels"]
+    if what == "disrupted":
+        return f" (sweep: {lab.get('kink_disruption', 0)} of {n} such runs disrupted)"
+    if what == "saturated":
+        return f" (sweep: {lab.get('saturated_kink', 0)} of {n} such runs saturated)"
+    if what == "no kink":
+        return f" (sweep: {band['no_kink']} of {n} such runs grew no kink)"
+    return (f" (sweep: {100 * lab.get('saturated_kink', 0) / n:.0f} % saturated, "
+            f"{100 * band['no_kink'] / n:.0f} % no kink, of {n} runs)")
+
+
 def criteria(f, cls):
     """Each criterion: value, what theory says, and whether the run agreed."""
     label = cls["label"]
@@ -130,14 +154,15 @@ def criteria(f, cls):
                         (" (with a wall at ~4 radii and only 3 time units, the n = 1 helix grows slowly: "
                          "shorter helices decide the outcome)" if q < 1 and not kinked else ""),
                 "detail": "q = 2 pi a B_z / (L_z B_theta) with the starting current"})
+    band = _nq_band(nq)
     if nq < 0.5:
-        expect, agree = "far below 1: strongly unstable (sweep: 124 of 131 such runs disrupted)", disrupted
+        expect, agree = "far below 1: strongly unstable" + _sweep_says(band, "disrupted"), disrupted
     elif nq < 1.0:
-        expect, agree = "below 1: unstable but close to marginal (sweep: 43 of 43 saturated)", kinked
+        expect, agree = "below 1: unstable but close to marginal" + _sweep_says(band, "saturated"), kinked
     elif nq < 1.5:
-        expect, agree = "just above 1: marginal (sweep: 65 % saturated, 35 % no kink)", True
+        expect, agree = "just above 1: marginal" + _sweep_says(band, "mixed"), True
     else:
-        expect, agree = "well above 1: stable (sweep: 41 of 41 grew no kink)", not kinked
+        expect, agree = "well above 1: stable" + _sweep_says(band, "no kink"), not kinked
     out.append({"name": f"Kruskal-Shafranov n q for the seeded helix (n = {n})", "value": nq, "threshold": 1.0,
                 "expect": expect, "agree": agree,
                 "note": f"kink peak {f['m1_peak']:.2g} radii" + (", disrupted" if disrupted else ""),

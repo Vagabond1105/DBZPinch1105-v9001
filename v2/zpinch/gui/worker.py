@@ -7,10 +7,14 @@ speed. Communication is message passing:
 
   UI -> worker : ("rebuild", setup_dict, live_dict), ("live", live_dict),
                  ("run", bool), ("step", n), ("field", name), ("ack",), ("threads", n),
-                 ("export", path), ("analyse",), ("quit",)
+                 ("export", path), ("analyse",), ("stop_at", t or None), ("quit",)
   worker -> UI : ("ready", geometry_dict), ("snapshot", snap_dict, history_rows),
                  ("error", text), ("exported", path), ("export_failed", text),
-                 ("analysis", report_text), ("analysis_failed", text)
+                 ("analysis", report_bundle), ("analysis_failed", text), ("stopped_at", t)
+
+report_bundle is zpinch.analysis.report.bundle(): the analysis, its text
+and HTML forms and the figure PNGs. ("stop_at", t) pauses the run once when
+the time first passes t (the sweep and the outcome predictor stop at t = 3).
 
 Snapshots are flow-controlled: a new one is only sent after the UI has
 acknowledged the previous one, so a slow UI never builds up a backlog.
@@ -49,11 +53,13 @@ def worker_main(cmd_q, out_q, n_threads):
     from ..params import SetupParams, LiveParams
     from ..pinch import ZPinch, HISTORY_KEYS
     from ..diagnostics import export_zip
-    from ..analysis import analyse_sim, format_report
+    from ..analysis import features as FE
+    from ..analysis.report import bundle
 
     sim = None
     running = False
     step_requests = 0
+    stop_at = None
     field_name = "Density"
     acked = True
     force_snapshot = False
@@ -111,7 +117,9 @@ def worker_main(cmd_q, out_q, n_threads):
                     export_zip(sim, msg[1])
                     out_q.put(("exported", msg[1]))
                 elif kind == "analyse" and sim is not None:
-                    out_q.put(("analysis", format_report(analyse_sim(sim))))
+                    out_q.put(("analysis", bundle(*FE.run_from_sim(sim))))
+                elif kind == "stop_at":
+                    stop_at = None if msg[1] is None else float(msg[1])
             except Exception:
                 if kind in ("export", "analyse"):
                     failed = "export_failed" if kind == "export" else "analysis_failed"
@@ -129,8 +137,14 @@ def worker_main(cmd_q, out_q, n_threads):
 
         if running or step_requests:
             try:
+                t_before = sim.t
                 sim.step()
                 rate_n += 1
+                if stop_at is not None and t_before < stop_at <= sim.t:
+                    running = False
+                    step_requests = 0
+                    force_snapshot = True
+                    out_q.put(("stopped_at", sim.t))
                 step_requests = max(0, step_requests - 1)
                 if not math.isfinite(sim.history["total"][-1]) or not math.isfinite(sim.solver.dt):
                     raise FloatingPointError("the solution became non-finite (NaN/Inf)")

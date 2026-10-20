@@ -179,6 +179,48 @@
    "runs": 1058
   }
  },
+ "nq_bands": [
+  {
+   "hi": 0.5,
+   "labels": {
+    "kink_disruption": 206,
+    "saturated_kink": 17
+   },
+   "lo": 0.0,
+   "no_kink": 0,
+   "runs": 223
+  },
+  {
+   "hi": 1.0,
+   "labels": {
+    "saturated_kink": 70
+   },
+   "lo": 0.5,
+   "no_kink": 0,
+   "runs": 70
+  },
+  {
+   "hi": 1.5,
+   "labels": {
+    "quiescent": 15,
+    "resistive_diffusion": 21,
+    "saturated_kink": 47
+   },
+   "lo": 1.0,
+   "no_kink": 36,
+   "runs": 83
+  },
+  {
+   "hi": Infinity,
+   "labels": {
+    "quiescent": 47,
+    "resistive_diffusion": 17
+   },
+   "lo": 1.5,
+   "no_kink": 64,
+   "runs": 64
+  }
+ ],
  "runs": 1058,
  "source": "sweep-2026-10-19, 1058 runs at 32^3 (tools/analyse.py labels)"
 }

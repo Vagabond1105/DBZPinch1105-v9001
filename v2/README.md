@@ -15,7 +15,8 @@ Full documentation (Obsidian notes) lives in `../docs/`:
 ./run.sh                    # GUI
 ./run.sh --headless --t-end 2 --set current=1.5 axial_field=0.8 --export run.zip
 ./run.sh --headless --t-end 3 --preset "Saturated kink (Bz = 0.6)" --analyse   # + outcome report
-./test.sh                   # physics + analysis tests (55 tests, ~1 min)
+./run.sh --headless --t-end 3 --preset "Stable screw pinch" --report stable.html  # standalone HTML report
+./test.sh                   # physics, analysis, library and report tests
 .venv/bin/python tools/analyse.py dataset/sweep-2026-10-19        # label a whole sweep
 .venv/bin/python tools/train.py dataset/sweep-2026-10-19          # train + evaluate the models
 ```
@@ -39,12 +40,14 @@ zpinch/solver.py        generic 3D MHD solver (SSP-RK2, ghost cells, dt, energy/
 zpinch/pinch.py         Z-pinch problem: Bennett equilibrium, drive circuit, tracers, diagnostics
 zpinch/params.py        setup + live parameters (metadata drives the GUI)
 zpinch/diagnostics.py   plots + zip export
-zpinch/analysis/        v3: features, physics rules (outcome class + timeline), explanations, ML models
+zpinch/analysis/        v3: features, physics rules (outcome class + timeline), explanations, ML models,
+                        curated write-up library (library/, writeup.py), HTML report (report.py)
 models/                 v3: trained models + MODEL_CARD.md, confusion/calibration/outcome-map figures
 zpinch/gui/             Qt window, vispy 3D view, controls, physics worker process
 tools/sweep.py          v3: overnight parameter sweep -> dataset/ (resumable)
 tools/analyse.py        v3: label/explain one saved run or a whole sweep
 tools/train.py          v3: train/evaluate run classifier (a) and outcome predictor (b)
+tools/library.py        v3: write-up library upkeep (stats, check, show, replay the textbook runs)
 tests/                  Sod, Alfven wave, diffusion, energy budget, equilibrium, kink growth; run analysis
 examples/               toy_advection.py, toy_muscl.py - tiny NumPy demos used in the docs
 ```

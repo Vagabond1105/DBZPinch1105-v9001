@@ -7,8 +7,8 @@ of `../writeup.py`. Plain-language overview: `docs/05.3 - V3 Phase 4 Write-up Li
 | File | What it is |
 |---|---|
 | `*.md` | the entries: front matter (class, regime box, compare box, example run, preset, review state), then *What happened*, *Why*, *Try next* |
-| `stats.json` | for each entry, the sweep runs inside its compare box and their labels; fills the `{regime_*}` numbers. Generated: `tools/library.py stats DIR` |
-| `examples.json` | each example run's starting parameters, so the textbook runs can be loaded without the dataset. Generated: `tools/library.py check DIR` |
+| `stats.json` | for each entry, the sweep runs inside its compare box and their labels (fills the `{regime_*}` numbers), plus the Kruskal-Shafranov n q bands quoted in the report's criteria table. Generated: `tools/library.py stats DIR` |
+| `examples.json` | each example run's starting parameters, so the textbook runs can be loaded without the dataset (the GUI's *Textbook run* list and the report's *Load its textbook run* button). Generated: `tools/library.py check DIR` |
 
 ## Reviewing an entry
 
@@ -16,7 +16,8 @@ of `../writeup.py`. Plain-language overview: `docs/05.3 - V3 Phase 4 Write-up Li
 against the sweep statistics and the example run) or `yes` (a physicist has
 read it too). To review one:
 
-1. `.venv/bin/python tools/library.py show dataset/sweep-2026-10-19/runs/<example>.npz` prints it filled in.
+1. `.venv/bin/python tools/library.py show dataset/sweep-2026-10-19/runs/<example>.npz` prints it filled in
+   (add `--html out.html` to see the full report, figures included).
 2. Check each sentence of *Why* against notes 04 (Part 0) or a textbook, and
    each *Try next* against what actually happens if you do it.
 3. Change `reviewed: data-checked` to `reviewed: yes`.

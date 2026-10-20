@@ -57,6 +57,7 @@ from . import rules as RU
 
 LIBRARY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "library")
 STATS_PATH = os.path.join(LIBRARY_DIR, "stats.json")
+EXAMPLES_PATH = os.path.join(LIBRARY_DIR, "examples.json")
 SECTIONS = ("What happened", "Why", "Try next")
 REVIEW_STATES = {
     "data-checked": "checked against the sweep data; not yet reviewed by a physicist",
@@ -138,6 +139,23 @@ def load_stats():
             return json.load(fh)
     except (OSError, ValueError):
         return None
+
+
+def load_examples(entries=None):
+    """
+    The textbook runs: {entry id: example} for every in-use entry whose
+    example is in examples.json (tools/library.py check), each with the
+    entry's title and class added. Ordered by class, then title.
+    """
+    entries = load() if entries is None else entries
+    try:
+        with open(EXAMPLES_PATH) as fh:
+            ex = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    out = {e["id"]: {**ex[e["id"]], "title": e["title"], "class": e["class"]}
+           for e in entries if e["id"] in ex}
+    return dict(sorted(out.items(), key=lambda kv: (kv[1]["class"], kv[1]["title"])))
 
 
 # =====================================================
