@@ -458,7 +458,7 @@ Both versions use the same words. The report appears:
 
 ### The GUI flow
 
-1. Pick a preset, your own settings, or a **Textbook run**: the exact settings of one of the 12 sweep runs the library entries were checked on.
+1. Pick a preset, your own settings, or a **Textbook run**: the exact settings of one of the 12 sweep runs the library entries were checked on. A textbook run sets every value itself, so the **Preset** box goes blank while one is loaded (it would otherwise still name a preset that isn't in use); picking a preset or **Reset to defaults** fills it again.
 2. Watch the **Predicted outcome** line under the Run buttons; it updates as you move sliders.
 3. Press **Start**. The run **pauses itself at t = 3**, the horizon of the sweep and of the forecast, so everything compares like with like. Then the report opens.
 4. Read it top to bottom. The panel's buttons save it (HTML or text), copy it, load the textbook run for this write-up, or load the preset it names.
@@ -560,6 +560,9 @@ v2/
                                    disagreements.md
   dataset/                         the sweep (git-ignored: 2902 runs)
   tests/                           test_physics, test_analysis, test_model, test_library, test_report
+  screenshots/                     gui_report.png, gui_kink.png, gallery.png (shown in the READMEs, §15)
+  README.md                        results, screenshots, how to run
+README.md                          the repo's front page: one paragraph, the main screenshot, links
 docs/
   05 - V3 Plan.md                  the plan and its status log
   05.1 … 05.4                      one plain-language note per phase
@@ -611,9 +614,19 @@ xdg-open demo/index.html
 
 `demo/index.html` is one page: the headline scores, a card for each of the 12 textbook runs (outcome, settings, the opening sentence of its write-up, and its kink plot with the phases shaded), and the outcome map, calibration and confusion figures. Each card links to that run's full standalone report. Every page has its figures embedded, so the folder can be zipped and sent, and it opens without Python or the GUI. Nothing in it is computed afresh; it presents what the pipeline measured. (`v2/demo/` is git-ignored: regenerate it rather than commit it.)
 
-### A three-minute screen recording
+### Screenshots
 
-A run sheet for the recording the plan asks for. Start the GUI first and let it compile its kernels (first launch only), so the recording doesn't open on a wait.
+Most people who look at the project won't install it, so the READMEs carry three pictures (in `v2/screenshots/`):
+
+- **`gui_report.png`**: the textbook run *Saturated kink just inside the Kruskal–Shafranov limit* (sweep run r00273), paused at t = 3. The 3D view shows the column bent into a helix, and the Run report on the right explains why it stopped. This is also the picture on the repo's front page (`README.md` at the top level).
+- **`gui_kink.png`**: the same run at t = 1.6, when the kink is near its largest.
+- **`gallery.png`**: the top of `demo/index.html`: the scores and the first six textbook-run cards.
+
+The two GUI shots were taken by a small script that drives the real window: load the textbook run, set *Pause & analyse at t =* to 1.6, press Start, capture, then resume to t = 3 and capture again. One detail: the 3D view is drawn with OpenGL, which an ordinary window capture can return black, so the script paints the 3D view's own render over that part of the picture. To retake them by hand, do the same and use the screenshot key.
+
+### A three-minute screen recording (optional)
+
+The screenshots cover the essentials; a recording adds the kink actually growing. A run sheet for it: Start the GUI first and let it compile its kernels (first launch only), so the recording doesn't open on a wait.
 
 | Time | On screen | Say (roughly) |
 |---|---|---|
@@ -626,5 +639,5 @@ A run sheet for the recording the plan asks for. Start the GUI first and let it 
 | 2:30 | **Save report...**, then open the HTML in a browser; then `demo/index.html` | "The same report as a standalone page, and a gallery of every textbook run." |
 | 2:50 | `models/outcome_map.png` | "94 % accurate before the run starts, against 68 % for the textbook rule alone." |
 
-To record on Ubuntu: GNOME's built-in recorder (Ctrl + Shift + Alt + R) saves a WebM in `~/Videos`. Or use OBS for the window only.
+To record on Ubuntu: GNOME's built-in recorder (Ctrl + Shift + Alt + R, or Print Screen and switch the bar to video) saves a WebM in `~/Videos/Screencasts`. Or use OBS for the window only. A 40-second silent cut (load the textbook run, Start, orbit once, scroll the report) is enough for a README GIF.
 
