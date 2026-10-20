@@ -5,7 +5,11 @@ forecasts each run: physics rules say what happened, a curated library writes it
 two models trained on an overnight sweep of 2902 simulations cross-check the label and predict the outcome
 before the run starts (94.3 % on held-out runs, against 67.6 % for the Kruskal-Shafranov number alone).
 
+![Demo: saturated kink, then disruption](v2/screenshots/demo.gif)
+
 ![GUI with the run report](v2/screenshots/gui_report.png)
+
+Full 55-second demo with the run reports: [v2/screenshots/zpinch-demo.mp4](v2/screenshots/zpinch-demo.mp4).
 
 - `v2/` is the current program (v2 solver and GUI, plus the v3 analysis). Start with
   [v2/README.md](v2/README.md) for results, screenshots and how to run it.

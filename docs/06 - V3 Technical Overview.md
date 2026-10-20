@@ -560,7 +560,7 @@ v2/
                                    disagreements.md
   dataset/                         the sweep (git-ignored: 2902 runs)
   tests/                           test_physics, test_analysis, test_model, test_library, test_report
-  screenshots/                     gui_report.png, gui_kink.png, gallery.png (shown in the READMEs, §15)
+  screenshots/                     demo.gif, zpinch-demo.mp4, gui_report.png, gui_kink.png, gallery.png (§15)
   README.md                        results, screenshots, how to run
 README.md                          the repo's front page: one paragraph, the main screenshot, links
 docs/
@@ -624,9 +624,18 @@ Most people who look at the project won't install it, so the READMEs carry three
 
 The two GUI shots were taken by a small script that drives the real window: load the textbook run, set *Pause & analyse at t =* to 1.6, press Start, capture, then resume to t = 3 and capture again. One detail: the 3D view is drawn with OpenGL, which an ordinary window capture can return black, so the script paints the 3D view's own render over that part of the picture. To retake them by hand, do the same and use the screenshot key.
 
-### A three-minute screen recording (optional)
+### The recording
 
-The screenshots cover the essentials; a recording adds the kink actually growing. A run sheet for it: Start the GUI first and let it compile its kernels (first launch only), so the recording doesn't open on a wait.
+Recorded 2026-10-20 with GNOME's screen recorder (three takes) and cut with ffmpeg into:
+
+- **`v2/screenshots/zpinch-demo.mp4`** (55 s, for LinkedIn or a CV link): the textbook saturated-kink run at 10× then 6× speed, its report at t = 3 (full window, then zoomed onto the panel), then a pure Z-pinch with no axial field and the drive current raised to 3× Bennett at 10× speed, tearing apart, and its report. That report carries the coverage warning *outside the training sweep: current* (§7.6), since the sweep never went above about 2.8×.
+- **`v2/screenshots/demo.gif`** (18 s, 760 px wide, 5 MB): the two runs only, faster, at the top of both READMEs. GitHub plays a GIF inline; it won't play an MP4 stored in the repo inside a README, which is why both exist.
+
+Each segment has a caption naming what's happening and its speed-up. The 3-minute take was sped up rather than cut, so the physics shown is continuous; one accidental camera zoom (about 7 s) was cut out of the textbook run.
+
+### A three-minute screen recording: the run sheet
+
+The run sheet the recording was planned from: Start the GUI first and let it compile its kernels (first launch only), so the recording doesn't open on a wait.
 
 | Time | On screen | Say (roughly) |
 |---|---|---|

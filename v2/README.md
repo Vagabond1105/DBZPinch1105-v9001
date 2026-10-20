@@ -28,7 +28,13 @@ n q >= 1.5 grows a kink. Every run gets a plain-language report (what happened, 
 from a curated, data-checked library.
 How it all works, from zero: `docs/06 - V3 Technical Overview.md`. Demo gallery: `tools/demo.py`.
 
-## Screenshots
+## Demo and screenshots
+
+Two runs, sped up: with an axial field the kink grows and then saturates; without one, at three times the
+Bennett current, it tears the column apart. The full 55-second demo, including both runs' reports, is
+[screenshots/zpinch-demo.mp4](screenshots/zpinch-demo.mp4).
+
+![Demo: saturated kink, then disruption](screenshots/demo.gif)
 
 A textbook run paused at t = 3: the column has bent into a helix and stopped (a saturated kink), and the
 run report on the right explains why, with the sweep statistics behind the claim.
