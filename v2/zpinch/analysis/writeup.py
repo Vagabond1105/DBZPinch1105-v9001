@@ -273,7 +273,7 @@ def values(r, meta=None, stats=None, entry=None):
         "cooling_half": f["cooling"] / 2.0,
         # the rules' thresholds, so the text never retypes them
         "grown": RU.GROWN, "nonlinear": RU.NONLINEAR, "mixed_radius": FE.MIXED_RADIUS,
-        "collapse_t": RU.COLLAPSE_T, "collapse_rho": RU.COLLAPSE_RHO, "sag": RU.SAG,
+        "collapse_t": RU.COLLAPSE_T, "collapse_rho": RU.COLLAPSE_RHO, "sag": RU.SAG, "disrupt_delay": RU.DISRUPT_DELAY,
     })
     v["t_kink_needed"] = kink_time_needed(f)
 

@@ -1,226 +1,242 @@
 {
  "classes": {
-  "gravity_sag": 198,
-  "kink_disruption": 435,
-  "quiescent": 89,
-  "radiative_collapse": 30,
-  "resistive_diffusion": 47,
-  "saturated_kink": 259
+  "gravity_sag": 485,
+  "kink_disruption": 1140,
+  "kink_growing": 1,
+  "quiescent": 267,
+  "radiative_collapse": 77,
+  "resistive_diffusion": 127,
+  "saturated_kink": 745
  },
  "entries": {
   "gravity-sag-general": {
    "labels": {
-    "gravity_sag": 172,
-    "quiescent": 2,
-    "radiative_collapse": 9,
-    "resistive_diffusion": 3,
-    "saturated_kink": 14
+    "gravity_sag": 420,
+    "kink_growing": 1,
+    "quiescent": 4,
+    "radiative_collapse": 24,
+    "resistive_diffusion": 6,
+    "saturated_kink": 26
    },
-   "runs": 200
+   "runs": 481
   },
   "gravity-sag-with-kink": {
    "labels": {
-    "gravity_sag": 109,
+    "gravity_sag": 287,
     "kink_disruption": 1,
-    "radiative_collapse": 5,
-    "resistive_diffusion": 3,
-    "saturated_kink": 50
+    "radiative_collapse": 13,
+    "resistive_diffusion": 5,
+    "saturated_kink": 124
    },
-   "runs": 168
+   "runs": 430
   },
   "kink-disruption-driven": {
    "labels": {
-    "kink_disruption": 91,
-    "saturated_kink": 11
+    "kink_disruption": 256,
+    "saturated_kink": 26
    },
-   "runs": 102
+   "runs": 282
   },
   "kink-disruption-general": {
    "labels": {
-    "gravity_sag": 198,
-    "kink_disruption": 435,
-    "quiescent": 89,
-    "radiative_collapse": 30,
-    "resistive_diffusion": 47,
-    "saturated_kink": 259
+    "gravity_sag": 485,
+    "kink_disruption": 1140,
+    "kink_growing": 1,
+    "quiescent": 267,
+    "radiative_collapse": 77,
+    "resistive_diffusion": 127,
+    "saturated_kink": 745
    },
-   "runs": 1058
+   "runs": 2842
   },
   "kink-disruption-pure-zpinch": {
    "labels": {
-    "kink_disruption": 72
+    "kink_disruption": 194,
+    "saturated_kink": 4
    },
-   "runs": 72
+   "runs": 198
   },
   "kink-disruption-weak-bz": {
    "labels": {
-    "kink_disruption": 101,
-    "saturated_kink": 17
+    "kink_disruption": 289,
+    "saturated_kink": 47
    },
-   "runs": 118
+   "runs": 336
   },
   "kink-growing-general": {
    "labels": {
-    "gravity_sag": 198,
-    "kink_disruption": 435,
-    "quiescent": 89,
-    "radiative_collapse": 30,
-    "resistive_diffusion": 47,
-    "saturated_kink": 259
+    "gravity_sag": 485,
+    "kink_disruption": 1140,
+    "kink_growing": 1,
+    "quiescent": 267,
+    "radiative_collapse": 77,
+    "resistive_diffusion": 127,
+    "saturated_kink": 745
    },
-   "runs": 1058
+   "runs": 2842
   },
   "kink-growing-marginal": {
    "labels": {
-    "quiescent": 15,
-    "resistive_diffusion": 21,
-    "saturated_kink": 117
+    "quiescent": 40,
+    "resistive_diffusion": 53,
+    "saturated_kink": 330
    },
-   "runs": 153
+   "runs": 423
   },
   "kink-growing-strong": {
    "labels": {
-    "kink_disruption": 206,
-    "saturated_kink": 17
+    "kink_disruption": 574,
+    "saturated_kink": 51
    },
-   "runs": 223
+   "runs": 625
   },
   "quiescent-general": {
    "labels": {
-    "gravity_sag": 198,
-    "kink_disruption": 435,
-    "quiescent": 89,
-    "radiative_collapse": 30,
-    "resistive_diffusion": 47,
-    "saturated_kink": 259
+    "gravity_sag": 485,
+    "kink_disruption": 1140,
+    "kink_growing": 1,
+    "quiescent": 267,
+    "radiative_collapse": 77,
+    "resistive_diffusion": 127,
+    "saturated_kink": 745
    },
-   "runs": 1058
+   "runs": 2842
   },
   "quiescent-marginal": {
    "labels": {
-    "quiescent": 15,
-    "resistive_diffusion": 21,
-    "saturated_kink": 47
+    "quiescent": 40,
+    "resistive_diffusion": 53,
+    "saturated_kink": 146
    },
-   "runs": 83
+   "runs": 239
   },
   "quiescent-stable": {
    "labels": {
-    "quiescent": 47,
-    "resistive_diffusion": 17
+    "quiescent": 144,
+    "resistive_diffusion": 49
    },
-   "runs": 64
+   "runs": 193
   },
   "quiescent-too-early": {
    "labels": {
-    "kink_disruption": 206,
-    "saturated_kink": 87
+    "kink_disruption": 574,
+    "saturated_kink": 235
    },
-   "runs": 293
+   "runs": 809
   },
   "radiative-collapse-general": {
    "labels": {
-    "gravity_sag": 12,
-    "quiescent": 5,
-    "radiative_collapse": 30,
-    "saturated_kink": 21
+    "gravity_sag": 37,
+    "kink_growing": 1,
+    "quiescent": 10,
+    "radiative_collapse": 76,
+    "saturated_kink": 48
    },
-   "runs": 68
+   "runs": 172
   },
   "resistive-diffusion-general": {
    "labels": {
-    "quiescent": 5,
-    "resistive_diffusion": 37,
-    "saturated_kink": 5
+    "quiescent": 9,
+    "resistive_diffusion": 95,
+    "saturated_kink": 13
    },
-   "runs": 47
+   "runs": 117
   },
   "saturated-kink-above-limit": {
    "labels": {
-    "quiescent": 62,
-    "resistive_diffusion": 38,
-    "saturated_kink": 47
+    "quiescent": 184,
+    "resistive_diffusion": 102,
+    "saturated_kink": 146
    },
-   "runs": 147
+   "runs": 432
   },
   "saturated-kink-general": {
    "labels": {
-    "gravity_sag": 198,
-    "kink_disruption": 435,
-    "quiescent": 89,
-    "radiative_collapse": 30,
-    "resistive_diffusion": 47,
-    "saturated_kink": 259
+    "gravity_sag": 485,
+    "kink_disruption": 1140,
+    "kink_growing": 1,
+    "quiescent": 267,
+    "radiative_collapse": 77,
+    "resistive_diffusion": 127,
+    "saturated_kink": 745
    },
-   "runs": 1058
+   "runs": 2842
   },
   "saturated-kink-marginal": {
    "labels": {
-    "saturated_kink": 70
+    "saturated_kink": 184
    },
-   "runs": 70
+   "runs": 184
   },
   "saturated-kink-near-disruption": {
    "labels": {
-    "kink_disruption": 206,
-    "saturated_kink": 17
+    "kink_disruption": 574,
+    "saturated_kink": 51
    },
-   "runs": 223
+   "runs": 625
+  },
+  "saturated-kink-no-bz": {
+   "labels": {
+    "kink_disruption": 285,
+    "saturated_kink": 4
+   },
+   "runs": 289
   },
   "sausage-general": {
    "labels": {
-    "gravity_sag": 198,
-    "kink_disruption": 435,
-    "quiescent": 89,
-    "radiative_collapse": 30,
-    "resistive_diffusion": 47,
-    "saturated_kink": 259
+    "gravity_sag": 485,
+    "kink_disruption": 1140,
+    "kink_growing": 1,
+    "quiescent": 267,
+    "radiative_collapse": 77,
+    "resistive_diffusion": 127,
+    "saturated_kink": 745
    },
-   "runs": 1058
+   "runs": 2842
   }
  },
  "nq_bands": [
   {
    "hi": 0.5,
    "labels": {
-    "kink_disruption": 206,
-    "saturated_kink": 17
+    "kink_disruption": 574,
+    "saturated_kink": 51
    },
    "lo": 0.0,
    "no_kink": 0,
-   "runs": 223
+   "runs": 625
   },
   {
    "hi": 1.0,
    "labels": {
-    "saturated_kink": 70
+    "saturated_kink": 184
    },
    "lo": 0.5,
    "no_kink": 0,
-   "runs": 70
+   "runs": 184
   },
   {
    "hi": 1.5,
    "labels": {
-    "quiescent": 15,
-    "resistive_diffusion": 21,
-    "saturated_kink": 47
+    "quiescent": 40,
+    "resistive_diffusion": 53,
+    "saturated_kink": 146
    },
    "lo": 1.0,
-   "no_kink": 36,
-   "runs": 83
+   "no_kink": 93,
+   "runs": 239
   },
   {
    "hi": Infinity,
    "labels": {
-    "quiescent": 47,
-    "resistive_diffusion": 17
+    "quiescent": 144,
+    "resistive_diffusion": 49
    },
    "lo": 1.5,
-   "no_kink": 64,
-   "runs": 64
+   "no_kink": 193,
+   "runs": 193
   }
  ],
- "runs": 1058,
- "source": "sweep-2026-10-19, 1058 runs at 32^3 (tools/analyse.py labels)"
+ "runs": 2842,
+ "source": "sweep-2026-10-19, 2842 runs at 32^3 (tools/analyse.py labels)"
 }

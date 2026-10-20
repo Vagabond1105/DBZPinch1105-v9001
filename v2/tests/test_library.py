@@ -163,3 +163,14 @@ def test_examples_file_matches_the_entries():
     assert set(ex) == {e["id"] for e in EXAMPLES}
     for eid, x in ex.items():
         assert {"setup", "live", "run", "label"} <= set(x)
+
+
+@pytest.mark.skipif(not os.path.isdir(SWEEP), reason="overnight sweep dataset not present")
+def test_saturated_label_without_axial_field_is_explained_honestly():
+    # r02217: B_z = 0, kink 1.06 a, column spread 1.00 time units after the
+    # kink went nonlinear (the disruption cut-off), labelled saturated
+    r = analyse_npz(os.path.join(SWEEP, "r02217.npz"), with_ml=False)
+    assert r["label"] == "saturated_kink" and r["confidence"] == "low"
+    assert r["writeup"]["id"] == "saturated-kink-no-bz"
+    text = " ".join(r["writeup"]["sections"].values()) + " ".join(c["text"] for c in r["causes"])
+    assert "held just enough" not in text and "stretch the axial field" not in text

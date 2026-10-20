@@ -276,6 +276,15 @@ def borderline(label, f, found):
              for name, thr in checks if _near(f[name], thr)]
     # tear-up delay: the column spread DISRUPT_DELAY after the kink went
     # nonlinear (found by the run classifier disagreeing on r00817: 0.97)
+    # near-miss of a radiative collapse, the highest-priority class: a core
+    # a few % warmer than COLLAPSE_T while already dense keeps the run's
+    # own label, but a slightly stronger cooling would have taken it
+    # (found by the run classifier disagreeing on r02076: T_core 0.42 T0,
+    # 2.3x denser, labelled saturated kink with high confidence)
+    if (label != "radiative_collapse" and f["core_density_max"] >= COLLAPSE_RHO / BORDER
+            and _near(f["core_temp_min"], COLLAPSE_T)):
+        notes.append(f"nearly a radiative collapse: the core cooled to {f['core_temp_min']:.3g} T0 "
+                     f"(collapse below {COLLAPSE_T:g}) at {f['core_density_max']:.2g}x its density")
     ev = found.get(label, {}) if label in ("kink_disruption", "saturated_kink") else {}
     if ev and math.isfinite(ev.get("t_nonlinear", math.nan)) and math.isfinite(ev.get("t_mixed", math.nan)):
         delay = ev["t_mixed"] - ev["t_nonlinear"]

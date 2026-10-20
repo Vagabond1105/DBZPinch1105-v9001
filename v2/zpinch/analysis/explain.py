@@ -117,7 +117,7 @@ def _nq_band(nq):
 
 
 def _sweep_says(band, what):
-    """' (sweep: 70 of 70 such runs saturated)', or '' without statistics."""
+    """' (sweep: 184 of 184 such runs saturated)', or '' without statistics."""
     if not band or not band["runs"]:
         return ""
     n, lab = band["runs"], band["labels"]
@@ -142,8 +142,8 @@ def criteria(f, cls):
     # kink-unstable when n q < 1 (its pitch matches the field lines inside
     # the column); q itself is the n = 1 case. The starting q is used: the
     # extra current of a strong drive flows mostly in the swept-up sheath,
-    # outside the column, so q / I over-predicts the kink (sweep: q < 0.1
-    # disrupts 99 % of the time, q / I < 0.1 only 91 %).
+    # outside the column, so q / I over-predicts the kink (full sweep, 2842
+    # runs at 32^3: q < 0.1 disrupts 96 % of the time, q / I < 0.1 only 86 %).
     q, nq, n = f["q_a"], f["nq_seed"], int(f["seed_n"])
     out.append({"name": "Kruskal-Shafranov q(a), longest helix", "value": q, "threshold": 1.0,
                 "expect": ("the longest helix (n = 1) is kink-unstable" if q < 1 else
@@ -294,22 +294,42 @@ def causes(h, f, cls):
 
     if "kink_growing" in found:
         nq = f["nq_seed"]
-        likely = ("most runs this far below n q = 1 went on to disrupt (124 of 131 below 0.5)" if nq < 0.5 else
-                  "runs with 0.5 < n q < 1 all saturated as a bent helix (43 of 43)" if nq < 1 else
-                  "runs with n q this close to 1 mostly saturated at a small amplitude")
+        band = _nq_band(nq)
+        if band and band["runs"]:
+            lab, n = band["labels"], band["runs"]
+            hi = "" if math.isinf(band["hi"]) else f" to {band['hi']:g}"
+            likely = (f" In the overnight sweep, of the {n} runs with n q from {band['lo']:g}{hi} (little gravity "
+                      f"or cooling), {lab.get('kink_disruption', 0)} disrupted"
+                      + (f", {lab.get('saturated_kink', 0)} saturated and {band['no_kink']} grew no kink"
+                         if band["no_kink"] else f" and {lab.get('saturated_kink', 0)} saturated")
+                      + " by t = 3.")
+        else:
+            likely = ""
         out.append({"topic": "kink_growing", "text": (
             f"The kink is still growing exponentially at t = {f['t_final']:.2f} ({f['m1_final']:.2g} radii, "
             f"growing at {found['kink_growing']['late_rate']:.2f} per time unit), so the outcome is not decided "
-            f"yet. Run longer and analyse again. In the overnight sweep, {likely}.")})
+            f"yet. Run longer and analyse again.{likely}")})
 
     if "saturated_kink" in found:
         p = _phase(cls, "saturated_kink")
         e = found["saturated_kink"]
         d = energy_between(h, p["t_start"], p["t_end"])
         text = (f"The kink stopped growing at ~{e['m1_sat']:.2g} radii (t = {e['t_sat']:.2f}) and the column "
-                f"survived as a bent helix. Saturation happens when the helix has released the magnetic energy "
-                f"it can reach: bending further would stretch the axial field (B_z = {f['axial_field']:.2g}) "
-                f"more than it gains. ")
+                f"survived as a bent helix. ")
+        if f["axial_field"] > 0:
+            text += (f"Saturation happens when the helix has released the magnetic energy it can reach: bending "
+                     f"further would stretch the axial field (B_z = {f['axial_field']:.2g}) more than it gains. ")
+        else:
+            # B_z = 0: no field to stretch. In the full sweep 4 of 198 pure
+            # Z-pinches got this label (r01676, r01904, r02217, r02800), all
+            # at low current with the tear-up delay right at DISRUPT_DELAY
+            delay = e.get("t_mixed", math.nan) - e.get("t_nonlinear", math.nan)
+            text += ("With no axial field there is no stretched field line to stop it, so this is not the "
+                     "textbook saturation. "
+                     + (f"The column did spread to {f['radius_max']:.2g} radii, but {delay:.2f} time units after "
+                        f"the kink went nonlinear, just past the {RU.DISRUPT_DELAY:g} that counts as a disruption: "
+                        f"read it as a slow disruption. " if math.isfinite(delay) else
+                        "Treat the label with care: a pure Z-pinch almost always disrupts. "))
         if e["m1_final"] > 1.3 * e["m1_sat"]:
             text += (f"Late in the run it crept up again, to {e['m1_final']:.2g} radii at t = {f['t_final']:.2f}, "
                      f"far slower than its exponential phase"
