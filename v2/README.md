@@ -22,10 +22,27 @@ Trained and tested on one overnight sweep of 2902 simulations (562 runs locked a
 | **Outcome predictor: what will happen, from the settings alone** | **94.3 %** | 93.3 % |
 | Baseline: the Kruskal-Shafranov number n q alone | 67.6 % | 44.6 % |
 
-The sweep reproduces the Kruskal-Shafranov criterion with no physics put in by hand: 108 of 108 runs with
-0.5 <= n q < 1 saturate as a bent helix, and none of the 110 runs with n q >= 1.5 grows a kink. Every run
-gets a plain-language report (what happened, why, what to try next) from a curated, data-checked library.
+The sweep reproduces the Kruskal-Shafranov criterion with no physics put in by hand: of the runs without
+gravity or cooling, 108 of 108 with 0.5 <= n q < 1 saturate as a bent helix, and none of the 110 with
+n q >= 1.5 grows a kink. Every run gets a plain-language report (what happened, why, what to try next)
+from a curated, data-checked library.
 How it all works, from zero: `docs/06 - V3 Technical Overview.md`. Demo gallery: `tools/demo.py`.
+
+## Screenshots
+
+A textbook run paused at t = 3: the column has bent into a helix and stopped (a saturated kink), and the
+run report on the right explains why, with the sweep statistics behind the claim.
+
+![GUI with the run report](screenshots/gui_report.png)
+
+The same run at t = 1.6, with the kink at its largest:
+
+![GUI mid-kink](screenshots/gui_kink.png)
+
+The demo gallery (`tools/demo.py`): headline scores and one card per textbook run, each linking to its
+full standalone report.
+
+![Demo gallery](screenshots/gallery.png)
 
 ## Run
 
