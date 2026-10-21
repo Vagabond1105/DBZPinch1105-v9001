@@ -1,4 +1,4 @@
-# Z-Pinch MHD
+# Dynamic B Field Z Pinch MHD Simulator
 
 **A 3D plasma simulator that watches each run, explains what happened in plain language, and predicts the
 outcome before you press Start.**
