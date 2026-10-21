@@ -283,28 +283,30 @@ validation, analysis, library and report).
 
 The project went through three versions, and the way it was built changed between them.
 
-**v1 (early October 2026): spec-driven, built in a chat.** I designed the program: the physics it had to
-include, the setup/live parameter split, tracer particles, the 3D view, the diagnostics and the rule that the
-energy must add up ([docs/01 §3](docs/01%20-%20Vision.md)). The code was then written module by module from
-that spec in a chat assistant, which could not run it, and I put the files together and ran them locally.
-The notes in [`v1/`](v1/) still say "per spec" and "see chat". The architecture was sound on paper, but the
-numerical core could not work. Measured later: energy grew ×2,700 in 3 steps and the state was NaN within 36
-steps even with the current off, and one step at the default grid took 20 s and 12.7 GB. The causes were an
-unconditionally unstable update rule (FTCS), a 10⁸ pressure cliff with nothing to hold it, and terms that were
-not physics, such as a field "nudged" toward a target shape. The post-mortem is
+**v1: architected and designed by me, implemented by a friend.** I architected and fully designed the
+program: the physics it had to include, the module structure, the setup/live parameter split, tracer
+particles, the 3D view, the diagnostics and the rule that the energy must add up
+([docs/01 §3](docs/01%20-%20Vision.md)). A friend implemented it from my spec. The architecture held up, but
+the numerical core could not work. Measured later: energy grew ×2,700 in 3 steps and the state was NaN within
+36 steps even with the current off, and one step at the default grid took 20 s and 12.7 GB. The causes were
+an unconditionally unstable update rule (FTCS), a 10⁸ pressure cliff with nothing to hold it, and terms that
+were not physics, such as a field "nudged" toward a target shape. The post-mortem is
 [docs/02](docs/02%20-%20V1%20and%20Why%20It%20Failed.md).
 
-**v2 and v3 (mid to late October 2026): agentically engineered.** I directed a rewrite with Claude Code, an AI
-coding agent, which wrote the code. v2 is the validated solver and GUI
-([docs/03](docs/03%20-%20V2%20Changes%20and%20Fixes.md) lists every fix). For v3 I made the design
-decisions before any code was written: classify finished runs first, then predict from the settings;
-explanations from a fixed, curated library rather than generated text; plain language for students with full
-data underneath for researchers; one overnight sweep of compute; and show low confidence and unreviewed text
-rather than hide it ([docs/05](docs/05%20-%20V3%20Plan.md) §0). The agent built it in phases, ran the sweep,
-trained the models and wrote the docs, and I signed off on decisions along the way, such as adding
-scikit-learn and resuming the sweep. Every threshold in the code carries a comment with its reason and the run that justifies it, and
-[docs/06](docs/06%20-%20V3%20Technical%20Overview.md) explains all of it from zero, so that I can learn every
-line.
+**v2: bug-fixed and accelerated by Claude.** Claude Code (an AI coding agent) did all of v2. It replaced the
+numerics with a validated finite-volume solver, fixed every bug in the post-mortem, compiled the physics with
+numba and moved the 3D view to GPU ray-cast volume rendering. A step went from 19.9 s to 9.6 ms, and memory
+from 12.7 GB to under 1.2 GB. [docs/03](docs/03%20-%20V2%20Changes%20and%20Fixes.md) lists every change.
+
+**v3: agentically engineered by me.** I engineered v3 by directing Claude Code: I set the design and the
+decisions, and the agent wrote the code to them. Before any code was written I decided: classify finished runs
+first, then predict from the settings; explanations from a fixed, curated library rather than generated text;
+plain language for students with full data underneath for researchers; one overnight sweep of compute; and
+show low confidence and unreviewed text rather than hide it ([docs/05](docs/05%20-%20V3%20Plan.md) §0). I
+drove it phase by phase, including the sweep, the models and the docs, and made the calls along the way, such
+as adding scikit-learn and resuming the sweep. Every threshold in the code carries a comment with its reason
+and the run that justifies it, and [docs/06](docs/06%20-%20V3%20Technical%20Overview.md) explains all of it
+from zero.
 
 This README was written by Claude from the code, the docs and the git history.
 
